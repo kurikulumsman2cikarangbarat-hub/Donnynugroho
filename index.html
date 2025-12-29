@@ -275,6 +275,69 @@
             border-color: var(--hazard-yellow);
         }
 
+        /* --- TACTICAL DEMO BOX STYLES --- */
+        .demo-box {
+            background: rgba(20, 30, 20, 0.6); 
+            border: 1px solid var(--olive-dark);
+            padding: 20px; 
+            border-radius: 4px; 
+            height: 100%; 
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(107, 142, 35, 0.1), transparent);
+            transition: left 0.7s;
+        }
+
+        .demo-box:hover::before {
+            left: 100%;
+        }
+
+        .demo-box:hover {
+            border-color: var(--olive-secondary); 
+            box-shadow: 0 5px 25px rgba(85, 107, 47, 0.5);
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .demo-box:active {
+            transform: translateY(-4px) scale(1.01);
+        }
+
+        .demo-icon {
+            width: 50px; 
+            height: 50px; 
+            background: var(--tactical-gray); 
+            border-radius: 4px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 1px solid var(--olive-dark);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .demo-access-badge {
+            background: rgba(85, 107, 47, 0.3) !important;
+            border: 1px solid var(--olive-secondary) !important;
+            color: var(--hazard-yellow) !important;
+            border-radius: 2px !important;
+            font-family: 'Share Tech Mono', monospace !important;
+            font-size: 0.7rem !important;
+            padding: 3px 8px !important;
+            letter-spacing: 1px;
+        }
+
         /* --- TACTICAL SKILLS STYLE --- */
         .skill-category {
             color: var(--olive-light); 
@@ -510,6 +573,9 @@
             .skill-category { font-size: 0.9rem; margin-top: 20px; }
             .skill-info { font-size: 0.8rem; }
 
+            /* Demo Box Mobile */
+            .demo-box { margin-bottom: 10px; }
+            
             /* Project Box */
             .project-box { margin-bottom: 10px; }
         }
@@ -557,6 +623,7 @@
         <div class="dock-item" onclick="openModal('about')"><i class="fas fa-user-secret"></i><span class="dock-tooltip">Tactical Identity</span></div>
         <div class="dock-item" onclick="openModal('projects')"><i class="fas fa-cogs"></i><span class="dock-tooltip">Operations Database</span></div>
         <div class="dock-item" onclick="openModal('skills')"><i class="fas fa-crosshairs"></i><span class="dock-tooltip">Capabilities</span></div>
+        <div class="dock-item" onclick="openModal('demo')"><i class="fas fa-laptop-code"></i><span class="dock-tooltip">Demo Results</span></div>
         <div class="dock-item" style="background: linear-gradient(145deg, rgba(85, 107, 47, 0.5), rgba(74, 90, 35, 0.3)); border-color: var(--olive-secondary); color: var(--hazard-yellow);" onclick="openModal('contact')">
             <i class="fas fa-satellite-dish"></i><span class="dock-tooltip">Establish Comms</span>
         </div>
@@ -590,7 +657,7 @@
         </div>
     </div>
 
-    <!-- Modal CV (Sisa konten CV tetap sama) -->
+    <!-- Modal CV -->
     <div class="modal-overlay" id="modal-cv">
         <div class="holo-card">
             <button class="close-btn" onclick="closeModal('cv')"><i class="fas fa-times"></i></button>
@@ -745,6 +812,116 @@
         </div>
     </div>
 
+    <!-- Modal Demo Hasil Karya -->
+    <div class="modal-overlay" id="modal-demo">
+        <div class="holo-card">
+            <button class="close-btn" onclick="closeModal('demo')"><i class="fas fa-times"></i></button>
+            <h2 class="text-info fw-bold mb-4">LIVE DEMO RESULTS</h2>
+            <p class="fs-5 mb-4" style="color: var(--olive-light);">
+                <i class="fas fa-terminal me-2"></i>
+                Operational demos of deployed educational technology systems. Click to access live demonstrations.
+            </p>
+            
+            <div class="row g-4">
+                <!-- Demo 1: CBT Online System -->
+                <div class="col-md-6">
+                    <div class="demo-box" onclick="openDemo('cbt')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="demo-icon">
+                                <i class="fas fa-desktop" style="color: var(--olive-light); font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white fw-bold m-0">CBT Online System</h5>
+                                <small class="text-secondary">Live Demo</small>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-2">Secure computer-based examination system with timer and anti-cheat features. Click to test the demo.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="tech-stack"><i class="fas fa-code me-1"></i> HTML5, CSS3, JavaScript</span>
+                            <span class="demo-access-badge">CLICK TO ACCESS</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Demo 2: Educational Game -->
+                <div class="col-md-6">
+                    <div class="demo-box" onclick="openDemo('game')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="demo-icon">
+                                <i class="fas fa-gamepad" style="color: var(--olive-light); font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white fw-bold m-0">Educational Game Ops</h5>
+                                <small class="text-secondary">Interactive Demo</small>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-2">Gamified learning media for social sciences. Interactive quiz with scoring system.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="tech-stack"><i class="fab fa-js-square me-1"></i> JavaScript Game Logic</span>
+                            <span class="demo-access-badge">CLICK TO PLAY</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Demo 3: SPMB Online Portal -->
+                <div class="col-md-6">
+                    <div class="demo-box" onclick="openDemo('spmb')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="demo-icon">
+                                <i class="fas fa-user-graduate" style="color: var(--olive-light); font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white fw-bold m-0">SPMB Online Portal</h5>
+                                <small class="text-secondary">Prototype Demo</small>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-2">Digital student admission system with form validation and simulated notification.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="tech-stack"><i class="fab fa-whatsapp me-1"></i> Form + Notification Sim</span>
+                            <span class="demo-access-badge">TEST PROTOTYPE</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Demo 4: Certificate Generator -->
+                <div class="col-md-6">
+                    <div class="demo-box" onclick="openDemo('cert')">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="demo-icon">
+                                <i class="fas fa-certificate" style="color: var(--olive-light); font-size: 1.5rem;"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white fw-bold m-0">Auto-Cert Generator</h5>
+                                <small class="text-secondary">Template Demo</small>
+                            </div>
+                        </div>
+                        <p class="small text-secondary mb-2">Certificate template generator with custom name input and download feature.</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="tech-stack"><i class="fas fa-file-pdf me-1"></i> PDF Generation Demo</span>
+                            <span class="demo-access-badge">TRY GENERATOR</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-5 p-3 border border-secondary" style="background: rgba(20, 30, 20, 0.8);">
+                <h5 class="text-white mb-3"><i class="fas fa-info-circle me-2"></i>Demo Instructions</h5>
+                <ul style="color: var(--olive-light); font-size: 0.9rem; padding-left: 20px; margin: 0;">
+                    <li>Click on any demo box to open in new tab</li>
+                    <li>Demos are functional prototypes with limited backend</li>
+                    <li>Use test credentials if prompted (demo/demo)</li>
+                    <li>Contact for full system implementation</li>
+                </ul>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <button onclick="window.open('demos.html', '_blank')" class="btn-cyber" style="width: auto; font-size: 0.9rem;">
+                    <i class="fas fa-external-link-alt me-2"></i> VIEW ALL DEMOS IN FULLSCREEN
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Contact -->
     <div class="modal-overlay" id="modal-contact">
         <div class="holo-card">
@@ -834,12 +1011,40 @@
                 }, 300);
             }
         }
-        function closeModal(id) { document.getElementById('modal-' + id).classList.remove('active'); }
+        
+        function closeModal(id) { 
+            document.getElementById('modal-' + id).classList.remove('active'); 
+        }
+        
         document.querySelectorAll('.modal-overlay').forEach(o => {
-            o.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('active'); });
+            o.addEventListener('click', function(e) { 
+                if(e.target===this) this.classList.remove('active'); 
+            });
         });
 
-        // 5. GOOGLE SHEETS + QR CODE + CATALOG LOGIC
+        // 5. DEMO FUNCTIONS
+        function openDemo(type) {
+            const demoUrls = {
+                'cbt': 'https://donny-nugroho.github.io/CBT-Online/',
+                'game': 'https://donny-nugroho.github.io/Education-Game-Demo/',
+                'spmb': 'https://spmb-demo.glitch.me/',
+                'cert': 'https://cert-generator-demo.netlify.app/'
+            };
+            
+            if(demoUrls[type]) {
+                window.open(demoUrls[type], '_blank');
+            } else {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'DEMO UNAVAILABLE',
+                    text: 'Demo sedang dalam pengembangan.',
+                    background: '#0A0F0A',
+                    color: '#D4E6B5'
+                });
+            }
+        }
+
+        // 6. GOOGLE SHEETS + QR CODE + CATALOG LOGIC
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxjO_gkE4X9N5zLqY-_eQqVLP0sFUSsA_L1Mw_Lwl6m-0x4VSrZjOLhG8do_zDIfHOwiA/exec';
         const form = document.forms['submit-to-google-sheet'];
         const btn = document.querySelector('button[type="submit"]');
@@ -913,7 +1118,7 @@
                 });
         });
 
-        // 6. PDF CATALOG GENERATOR (Military themed)
+        // 7. PDF CATALOG GENERATOR (Military themed)
         function downloadCatalog() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
