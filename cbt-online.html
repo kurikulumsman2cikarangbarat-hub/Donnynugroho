@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Online System Demo | EdTech Tactical Operations</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --olive-primary: #556B2F;
+            --olive-secondary: #6B8E23;
+            --olive-light: #9AB973;
+            --olive-dark: #4A5A23;
+            --tactical-black: #0A0F0A;
+            --tactical-gray: #2C3E2C;
+            --hazard-yellow: #FFD700;
+            --correct-green: #00FF7F;
+            --wrong-red: #FF4444;
+            --warning-orange: #FFA500;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--tactical-black);
+            color: #D4E6B5;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(85, 107, 47, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(74, 90, 35, 0.1) 0%, transparent 20%);
+        }
+
+        .military-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(85, 107, 47, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 107, 47, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Header Styles */
+        .cbt-header {
+            background: rgba(10, 15, 10, 0.95);
+            border-bottom: 1px solid var(--olive-dark);
+            padding: 15px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cbt-logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--olive-secondary);
+        }
+
+        .cbt-logo i {
+            color: var(--tactical-black);
+            font-size: 1.5rem;
+        }
+
+        .header-title h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--hazard-yellow), var(--olive-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .header-title .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(20, 30, 20, 0.9);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(10, 15, 10, 0.8);
+            padding: 8px 15px;
+            border-radius: 4px;
+            border: 1px solid var(--olive-dark);
+        }
+
+        .timer-icon {
+            color: var(--hazard-yellow);
+            font-size: 1.2rem;
+        }
+
+        .timer-display {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.5rem;
+            color: var(--hazard-yellow);
+            font-weight: bold;
+        }
+
+        .timer-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--olive-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-counter {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .counter-display {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            color: var(--olive-light);
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            max-width: 300px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--olive-secondary), var(--olive-light));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            color: var(--tactical-black);
+            border: 1px solid var(--olive-secondary);
+            padding: 8px 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-btn:hover {
+            background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(85, 107, 47, 0.5);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-btn.warning {
+            background: linear-gradient(135deg, var(--warning-orange), #CC8400);
+            border-color: var(--warning-orange);
+        }
+
+        .control-btn.danger {
+            background: linear-gradient(135deg, var(--wrong-red), #CC0000);
+            border-color: var(--wrong-red);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            max-width: 500px;
+            margin: 50px auto;
+            background: rgba(10, 15, 10, 0.85);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--olive-light);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: var(--olive-light);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            color: var(--olive-light);
+            padding: 12px 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--olive-secondary);
+            box-shadow: 0 0 15px rgba(85, 107, 47, 0.3);
+        }
+
+        .form-select {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            color: var(--olive-light);
+            padding: 12px 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-select option {
+            background: var(--tactical-black);
+            color: var(--olive-light);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            color: var(--tactical-black);
+            border: 1px solid var(--olive-secondary);
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
+            letter-spacing: 3px;
+        }
+
+        .demo-credentials {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .demo-credentials h4 {
+            color: var(--olive-light);
+            font-family: 'Share Tech Mono', monospace;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(85, 107, 47, 0.3);
+        }
+
+        .credential-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Exam Screen */
+        .exam-screen {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .exam-info {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* Question Container */
+        .question-container {
+            background: rgba(10, 15, 10, 0.85);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--olive-dark);
+        }
+
+        .question-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--hazard-yellow);
+        }
+
+        .question-type {
+            background: rgba(85, 107, 47, 0.3);
+            border: 1px solid var(--olive-secondary);
+            color: var(--olive-light);
+            padding: 5px 15px;
+            border-radius: 4px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .question-content {
+            flex-grow: 1;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            color: #fff;
+            margin-bottom: 25px;
+        }
+
+        .question-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            margin: 15px 0;
+            background: var(--tactical-gray);
+            padding: 10px;
+        }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .option-item {
+            background: rgba(28, 40, 28, 0.8);
+            border: 2px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-item:hover {
+            background: rgba(42, 58, 42, 0.9);
+            border-color: var(--olive-secondary);
+            transform: translateX(5px);
+        }
+
+        .option-item.selected {
+            background: rgba(85, 107, 47, 0.3);
+            border-color: var(--olive-secondary);
+            box-shadow: 0 0 15px rgba(85, 107, 47, 0.3);
+        }
+
+        .option-letter {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: var(--tactical-gray);
+            border: 2px solid var(--olive-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--olive-light);
+        }
+
+        .option-text {
+            flex-grow: 1;
+            font-size: 1.1rem;
+            color: #D4E6B5;
+        }
+
+        /* Navigation Controls */
+        .navigation-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--olive-dark);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            color: var(--tactical-black);
+            border: 1px solid var(--olive-secondary);
+            padding: 10px 25px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.danger {
+            background: linear-gradient(135deg, var(--wrong-red), #CC0000);
+            border-color: var(--wrong-red);
+        }
+
+        .question-status {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            max-width: 300px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--tactical-gray);
+            border: 1px solid var(--olive-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .status-dot:hover {
+            transform: scale(1.2);
+        }
+
+        .status-dot.answered {
+            background: var(--olive-secondary);
+        }
+
+        .status-dot.current {
+            background: var(--hazard-yellow);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .status-dot.marked {
+            background: var(--warning-orange);
+        }
+
+        /* Result Screen */
+        .result-screen {
+            display: none;
+            max-width: 800px;
+            margin: 50px auto;
+            background: rgba(10, 15, 10, 0.85);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .result-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--olive-light);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            color: var(--hazard-yellow);
+            margin-bottom: 20px;
+        }
+
+        .score-display {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .score-number {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 5rem;
+            color: var(--hazard-yellow);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .score-label {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .result-stats {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(10, 15, 10, 0.9);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+        }
+
+        .stat-value {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--hazard-yellow);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: var(--olive-light);
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+
+        .result-breakdown {
+            margin: 30px 0;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid rgba(85, 107, 47, 0.3);
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .question-result {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .result-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .result-indicator.correct {
+            background: var(--correct-green);
+        }
+
+        .result-indicator.wrong {
+            background: var(--wrong-red);
+        }
+
+        .result-indicator.skipped {
+            background: var(--tactical-gray);
+            border: 1px solid var(--olive-dark);
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            color: var(--tactical-black);
+            border: 1px solid var(--olive-secondary);
+            padding: 15px 30px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(85, 107, 47, 0.5);
+        }
+
+        .action-btn.warning {
+            background: linear-gradient(135deg, var(--warning-orange), #CC8400);
+            border-color: var(--warning-orange);
+        }
+
+        /* Alert Modal */
+        .alert-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 15, 10, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(20, 30, 20, 0.95);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-icon {
+            font-size: 3rem;
+            color: var(--hazard-yellow);
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--olive-light);
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .modal-message {
+            color: #D4E6B5;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* Back Button */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: rgba(10, 15, 10, 0.8);
+            border: 1px solid var(--olive-secondary);
+            color: var(--olive-light);
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: var(--olive-secondary);
+            color: var(--tactical-black);
+            transform: translateY(-2px);
+        }
+
+        /* Anti-cheat Warning */
+        .anti-cheat-warning {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid var(--wrong-red);
+            border-radius: 4px;
+            padding: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: #FF8888;
+            max-width: 300px;
+            z-index: 100;
+        }
+
+        .warning-icon {
+            color: var(--wrong-red);
+            margin-right: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .control-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .progress-bar-container {
+                max-width: 100%;
+            }
+            
+            .main-container {
+                padding: 10px;
+            }
+            
+            .question-container {
+                padding: 20px;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+            }
+            
+            .option-item {
+                padding: 15px;
+            }
+            
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .result-screen {
+                padding: 20px;
+            }
+            
+            .score-number {
+                font-size: 3rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .blink {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="military-grid"></div>
+    
+    <div class="back-link">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETURN TO BASE
+        </a>
+    </div>
+
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-header">
+            <div class="cbt-logo">
+                <i class="fas fa-desktop"></i>
+            </div>
+            <h2>CBT ONLINE SYSTEM</h2>
+            <p>COMPUTER BASED TEST - DEMO VERSION</p>
+        </div>
+        
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label class="form-label">USER IDENTIFICATION</label>
+                <input type="text" class="form-input" id="username" placeholder="Enter your username" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">ACCESS CODE</label>
+                <input type="password" class="form-input" id="password" placeholder="Enter access code" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">EXAM SELECTION</label>
+                <select class="form-select" id="examType">
+                    <option value="demo">Demo Exam - Technology Education</option>
+                    <option value="practice">Practice Test - Basic Concepts</option>
+                    <option value="assessment">Assessment Test - Advanced Topics</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <i class="fas fa-sign-in-alt"></i> INITIATE EXAM
+            </button>
+        </form>
+        
+        <div class="demo-credentials">
+            <h4><i class="fas fa-info-circle"></i> DEMO CREDENTIALS</h4>
+            <div class="credential-item">
+                <span>Username:</span>
+                <strong style="color: var(--hazard-yellow);">demo</strong>
+            </div>
+            <div class="credential-item">
+                <span>Password:</span>
+                <strong style="color: var(--hazard-yellow);">demo123</strong>
+            </div>
+            <div class="credential-item">
+                <span>Exam Duration:</span>
+                <strong style="color: var(--olive-light);">15 minutes</strong>
+            </div>
+            <div class="credential-item">
+                <span>Questions:</span>
+                <strong style="color: var(--olive-light);">10 multiple choice</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exam Header -->
+    <div class="cbt-header" id="examHeader" style="display: none;">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="cbt-logo">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <div class="header-title">
+                    <h1>CBT ONLINE SYSTEM</h1>
+                    <div class="subtitle">COMPUTER BASED TEST - ACTIVE SESSION</div>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <div class="timer-container">
+                    <div class="timer-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <div class="timer-label">TIME REMAINING</div>
+                        <div class="timer-display" id="timerDisplay">15:00</div>
+                    </div>
+                </div>
+                
+                <div class="question-counter">
+                    <div>
+                        <div class="timer-label">QUESTION</div>
+                        <div class="counter-display" id="currentQuestionCount">1/10</div>
+                    </div>
+                </div>
+                
+                <div class="progress-bar-container">
+                    <div class="timer-label">PROGRESS</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                
+                <div class="control-buttons">
+                    <button class="control-btn warning" id="markBtn">
+                        <i class="far fa-bookmark"></i> MARK
+                    </button>
+                    <button class="control-btn danger" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i> SUBMIT
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Exam Container -->
+    <div class="main-container">
+        <!-- Exam Screen -->
+        <div class="exam-screen" id="examScreen">
+            <div class="exam-info">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">EXAMINEE</div>
+                        <div class="info-value" id="examineeName">Loading...</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">EXAM TYPE</div>
+                        <div class="info-value" id="examTypeDisplay">Demo Exam</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">QUESTIONS</div>
+                        <div class="info-value" id="totalQuestions">10</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">PASSING SCORE</div>
+                        <div class="info-value" id="passingScore">70%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="question-container">
+                <div class="question-header">
+                    <div class="question-number" id="questionNumber">Question 1</div>
+                    <div class="question-type">Multiple Choice</div>
+                </div>
+                
+                <div class="question-content">
+                    <div class="question-text" id="questionText">
+                        Loading question...
+                    </div>
+                    
+                    <div class="options-grid" id="optionsContainer">
+                        <!-- Options will be loaded here -->
+                    </div>
+                </div>
+                
+                <div class="navigation-controls">
+                    <div class="nav-buttons">
+                        <button class="nav-btn" id="prevBtn" disabled>
+                            <i class="fas fa-chevron-left"></i> PREVIOUS
+                        </button>
+                        <button class="nav-btn" id="nextBtn">
+                            NEXT <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="question-status" id="questionStatus">
+                        <!-- Status dots will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div class="result-screen" id="resultScreen">
+        <div class="result-header">
+            <div class="result-icon">
+                <i class="fas fa-medal"></i>
+            </div>
+            <h2>EXAM COMPLETED</h2>
+            <p style="color: var(--olive-light); font-family: 'Share Tech Mono', monospace;">
+                MISSION: CBT OPERATION - STATUS: TERMINATED
+            </p>
+        </div>
+        
+        <div class="score-display">
+            <div class="score-number" id="finalScore">0</div>
+            <div class="score-label">FINAL SCORE</div>
+        </div>
+        
+        <div class="result-stats">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">ACCURACY</div>
+                    <div class="stat-value" id="accuracyStat">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">TIME TAKEN</div>
+                    <div class="stat-value" id="timeStat">0:00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">QUESTIONS</div>
+                    <div class="stat-value" id="questionsStat">0/10</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">STATUS</div>
+                    <div class="stat-value" id="statusStat">--</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-breakdown" id="resultBreakdown">
+            <!-- Question breakdown will be loaded here -->
+        </div>
+        
+        <div class="result-actions">
+            <button class="action-btn" id="reviewBtn">
+                <i class="fas fa-search"></i> REVIEW ANSWERS
+            </button>
+            <button class="action-btn warning" id="retryBtn">
+                <i class="fas fa-redo"></i> RETRY EXAM
+            </button>
+            <a href="index.html" class="action-btn">
+                <i class="fas fa-home"></i> RETURN TO BASE
+            </a>
+        </div>
+    </div>
+
+    <!-- Alert Modal -->
+    <div class="alert-modal" id="alertModal">
+        <div class="modal-content">
+            <div class="modal-icon" id="modalIcon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="modal-title" id="modalTitle">ALERT</h3>
+            <div class="modal-message" id="modalMessage">
+                Modal message will appear here.
+            </div>
+            <div class="modal-actions">
+                <button class="control-btn" id="modalConfirmBtn">CONFIRM</button>
+                <button class="control-btn danger" id="modalCancelBtn">CANCEL</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Anti-cheat Warning -->
+    <div class="anti-cheat-warning" id="antiCheatWarning">
+        <i class="fas fa-shield-alt warning-icon"></i>
+        <strong>ANTI-CHEAT ACTIVE:</strong> Tab switching detected. Multiple violations may result in exam termination.
+    </div>
+
+    <script>
+        // Exam Database
+        const examDatabase = {
+            demo: {
+                title: "Technology Education - Demo Exam",
+                questions: [
+                    {
+                        id: 1,
+                        question: "Apa kepanjangan dari 'CPU' dalam komputer?",
+                        options: [
+                            "Central Processing Unit",
+                            "Computer Processing Unit", 
+                            "Central Program Unit",
+                            "Computer Program Unit"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "CPU adalah Central Processing Unit, otak dari komputer yang mengeksekusi instruksi."
+                    },
+                    {
+                        id: 2,
+                        question: "Manakah yang BUKAN termasuk jenis memori komputer?",
+                        options: [
+                            "RAM",
+                            "ROM",
+                            "USB",
+                            "Cache"
+                        ],
+                        correctAnswer: 2,
+                        explanation: "USB adalah port atau perangkat penyimpanan eksternal, bukan jenis memori internal komputer."
+                    },
+                    {
+                        id: 3,
+                        question: "Apa fungsi utama dari sistem operasi?",
+                        options: [
+                            "Mengelola sumber daya hardware",
+                            "Membuat dokumen",
+                            "Menghubungkan ke internet",
+                            "Memainkan game"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "Fungsi utama OS adalah mengelola sumber daya hardware dan menyediakan layanan untuk aplikasi."
+                    },
+                    {
+                        id: 4,
+                        question: "Protokol apa yang digunakan untuk mengirim email?",
+                        options: [
+                            "SMTP",
+                            "HTTP",
+                            "FTP",
+                            "TCP"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "SMTP (Simple Mail Transfer Protocol) digunakan untuk mengirim email."
+                    },
+                    {
+                        id: 5,
+                        question: "Apa itu 'Cloud Computing'?",
+                        options: [
+                            "Penyimpanan data di internet",
+                            "Komputer yang sangat besar",
+                            "Software untuk edit foto",
+                            "Jenis jaringan nirkabel"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "Cloud Computing adalah penyediaan layanan komputasi melalui internet."
+                    },
+                    {
+                        id: 6,
+                        question: "Manakah yang merupakan contoh bahasa pemrograman?",
+                        options: [
+                            "Python",
+                            "HTML",
+                            "CSS",
+                            "JSON"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "Python adalah bahasa pemrograman, sedangkan HTML, CSS, dan JSON bukan bahasa pemrograman."
+                    },
+                    {
+                        id: 7,
+                        question: "Apa fungsi dari firewall?",
+                        options: [
+                            "Melindungi jaringan dari akses tidak sah",
+                            "Mempercepat koneksi internet",
+                            "Menyimpan data backup",
+                            "Mengenkripsi file"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "Firewall melindungi jaringan dengan memfilter lalu lintas masuk dan keluar."
+                    },
+                    {
+                        id: 8,
+                        question: "Apa itu 'Open Source Software'?",
+                        options: [
+                            "Software dengan kode sumber terbuka",
+                            "Software gratis",
+                            "Software trial",
+                            "Software untuk Linux"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "Open Source Software adalah software yang kode sumbernya tersedia untuk umum."
+                    },
+                    {
+                        id: 9,
+                        question: "Manakah yang merupakan perangkat input?",
+                        options: [
+                            "Keyboard",
+                            "Monitor",
+                            "Printer",
+                            "Speaker"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "Keyboard adalah perangkat input untuk memasukkan data ke komputer."
+                    },
+                    {
+                        id: 10,
+                        question: "Apa itu 'Artificial Intelligence'?",
+                        options: [
+                            "Kecerdasan buatan mesin",
+                            "Komputer yang bisa merasa",
+                            "Software otomatis",
+                            "Robot fisik"
+                        ],
+                        correctAnswer: 0,
+                        explanation: "AI adalah simulasi kecerdasan manusia oleh mesin."
+                    }
+                ],
+                timeLimit: 15, // 15 minutes
+                passingScore: 70
+            },
+            practice: {
+                title: "Basic Concepts - Practice Test",
+                questions: [],
+                timeLimit: 20,
+                passingScore: 60
+            },
+            assessment: {
+                title: "Advanced Topics - Assessment Test",
+                questions: [],
+                timeLimit: 30,
+                passingScore: 75
+            }
+        };
+
+        // Game State
+        let currentExam = null;
+        let currentQuestionIndex = 0;
+        let answers = [];
+        let timeRemaining = 0;
+        let timerInterval = null;
+        let userData = null;
+        let markedQuestions = [];
+        let examStarted = false;
+        let tabSwitchCount = 0;
+
+        // DOM Elements
+        const loginScreen = document.getElementById('loginScreen');
+        const examHeader = document.getElementById('examHeader');
+        const examScreen = document.getElementById('examScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const loginForm = document.getElementById('loginForm');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const currentQuestionCount = document.getElementById('currentQuestionCount');
+        const progressFill = document.getElementById('progressFill');
+        const examineeName = document.getElementById('examineeName');
+        const examTypeDisplay = document.getElementById('examTypeDisplay');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const questionStatus = document.getElementById('questionStatus');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const markBtn = document.getElementById('markBtn');
+        const submitBtn = document.getElementById('submitBtn');
+        const finalScore = document.getElementById('finalScore');
+        const accuracyStat = document.getElementById('accuracyStat');
+        const timeStat = document.getElementById('timeStat');
+        const questionsStat = document.getElementById('questionsStat');
+        const statusStat = document.getElementById('statusStat');
+        const resultBreakdown = document.getElementById('resultBreakdown');
+        const reviewBtn = document.getElementById('reviewBtn');
+        const retryBtn = document.getElementById('retryBtn');
+        const alertModal = document.getElementById('alertModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalIcon = document.getElementById('modalIcon');
+        const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const antiCheatWarning = document.getElementById('antiCheatWarning');
+
+        // Initialize
+        function init() {
+            // Setup event listeners
+            loginForm.addEventListener('submit', handleLogin);
+            prevBtn.addEventListener('click', prevQuestion);
+            nextBtn.addEventListener('click', nextQuestion);
+            markBtn.addEventListener('click', toggleMark);
+            submitBtn.addEventListener('click', showSubmitConfirm);
+            reviewBtn.addEventListener('click', reviewAnswers);
+            retryBtn.addEventListener('click', retryExam);
+            modalConfirmBtn.addEventListener('click', handleModalConfirm);
+            modalCancelBtn.addEventListener('click', closeModal);
+            
+            // Anti-cheat detection
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            
+            // Hide anti-cheat warning initially
+            antiCheatWarning.style.display = 'none';
+        }
+
+        // Handle Login
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const examType = document.getElementById('examType').value;
+            
+            // Demo credentials check
+            if (username === 'demo' && password === 'demo123') {
+                userData = {
+                    username: username,
+                    examType: examType,
+                    startTime: new Date()
+                };
+                
+                currentExam = examDatabase[examType];
+                timeRemaining = currentExam.timeLimit * 60; // Convert to seconds
+                answers = new Array(currentExam.questions.length).fill(null);
+                markedQuestions = [];
+                currentQuestionIndex = 0;
+                examStarted = true;
+                tabSwitchCount = 0;
+                
+                // Show exam screen
+                loginScreen.style.display = 'none';
+                examHeader.style.display = 'block';
+                examScreen.style.display = 'flex';
+                
+                // Update exam info
+                examineeName.textContent = username.toUpperCase();
+                examTypeDisplay.textContent = currentExam.title;
+                
+                // Start timer
+                startTimer();
+                
+                // Load first question
+                loadQuestion();
+                
+                // Update question status
+                updateQuestionStatus();
+                
+                // Show welcome message
+                showAlert(
+                    'MISSION INITIATED',
+                    `Welcome, Operative ${username}. Exam "${currentExam.title}" has begun. Time limit: ${currentExam.timeLimit} minutes. Good luck!`,
+                    'info',
+                    false
+                );
+            } else {
+                showAlert(
+                    'ACCESS DENIED',
+                    'Invalid credentials. Use demo/demo123 for demo access.',
+                    'error',
+                    false
+                );
+            }
+        }
+
+        // Timer Functions
+        function startTimer() {
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    endExam('TIME_UP');
+                }
+                
+                // Warning at 5 minutes
+                if (timeRemaining === 300) {
+                    showAlert(
+                        'TIME WARNING',
+                        '5 minutes remaining. Complete your exam soon.',
+                        'warning',
+                        false
+                    );
+                }
+                
+                // Warning at 1 minute
+                if (timeRemaining === 60) {
+                    showAlert(
+                        'FINAL WARNING',
+                        '1 minute remaining. Hurry up!',
+                        'error',
+                        false
+                    );
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update progress bar
+            const totalTime = currentExam.timeLimit * 60;
+            const progress = ((totalTime - timeRemaining) / totalTime) * 100;
+            progressFill.style.width = `${progress}%`;
+            
+            // Change color when time is low
+            if (timeRemaining < 300) { // Less than 5 minutes
+                timerDisplay.style.color = 'var(--warning-orange)';
+            }
+            if (timeRemaining < 60) { // Less than 1 minute
+                timerDisplay.style.color = 'var(--wrong-red)';
+                timerDisplay.classList.add('blink');
+            }
+        }
+
+        // Question Management
+        function loadQuestion() {
+            const question = currentExam.questions[currentQuestionIndex];
+            
+            // Update question number
+            questionNumber.textContent = `Question ${currentQuestionIndex + 1}`;
+            currentQuestionCount.textContent = `${currentQuestionIndex + 1}/${currentExam.questions.length}`;
+            
+            // Update question text
+            questionText.textContent = question.question;
+            
+            // Clear options
+            optionsContainer.innerHTML = '';
+            
+            // Create options
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option-item';
+                if (answers[currentQuestionIndex] === index) {
+                    optionElement.classList.add('selected');
+                }
+                
+                optionElement.innerHTML = `
+                    <div class="option-letter">${optionLetters[index]}</div>
+                    <div class="option-text">${option}</div>
+                `;
+                
+                optionElement.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            // Update navigation buttons
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.disabled = currentQuestionIndex === currentExam.questions.length - 1;
+            
+            // Update mark button
+            updateMarkButton();
+        }
+
+        function selectOption(optionIndex) {
+            answers[currentQuestionIndex] = optionIndex;
+            loadQuestion();
+            updateQuestionStatus();
+        }
+
+        function updateMarkButton() {
+            const isMarked = markedQuestions.includes(currentQuestionIndex);
+            markBtn.innerHTML = isMarked ? 
+                '<i class="fas fa-bookmark"></i> UNMARK' : 
+                '<i class="far fa-bookmark"></i> MARK';
+        }
+
+        function toggleMark() {
+            const index = markedQuestions.indexOf(currentQuestionIndex);
+            if (index === -1) {
+                markedQuestions.push(currentQuestionIndex);
+            } else {
+                markedQuestions.splice(index, 1);
+            }
+            updateMarkButton();
+            updateQuestionStatus();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentExam.questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function updateQuestionStatus() {
+            questionStatus.innerHTML = '';
+            
+            for (let i = 0; i < currentExam.questions.length; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'status-dot';
+                
+                if (i === currentQuestionIndex) {
+                    dot.classList.add('current');
+                } else if (markedQuestions.includes(i)) {
+                    dot.classList.add('marked');
+                } else if (answers[i] !== null) {
+                    dot.classList.add('answered');
+                }
+                
+                dot.addEventListener('click', () => {
+                    currentQuestionIndex = i;
+                    loadQuestion();
+                });
+                
+                questionStatus.appendChild(dot);
+            }
+        }
+
+        // Exam Submission
+        function showSubmitConfirm() {
+            const unanswered = answers.filter(a => a === null).length;
+            
+            showAlert(
+                'SUBMIT EXAM',
+                `You have ${unanswered} unanswered questions. Are you sure you want to submit?`,
+                'warning',
+                true
+            );
+            
+            modalConfirmBtn.onclick = () => {
+                endExam('MANUAL_SUBMIT');
+                closeModal();
+            };
+        }
+
+        function endExam(reason) {
+            clearInterval(timerInterval);
+            examStarted = false;
+            
+            // Hide exam screen, show result
+            examHeader.style.display = 'none';
+            examScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+            
+            // Calculate results
+            const results = calculateResults();
+            displayResults(results, reason);
+            
+            // Show anti-cheat warning if applicable
+            if (tabSwitchCount > 0) {
+                const warning = document.createElement('div');
+                warning.className = 'tactical-alert';
+                warning.style.marginTop = '20px';
+                warning.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>SECURITY NOTE:</strong> ${tabSwitchCount} tab switch attempt(s) were detected during the exam.
+                `;
+                resultScreen.querySelector('.result-stats').after(warning);
+            }
+        }
+
+        function calculateResults() {
+            let correct = 0;
+            const questionResults = [];
+            
+            currentExam.questions.forEach((question, index) => {
+                const userAnswer = answers[index];
+                const isCorrect = userAnswer === question.correctAnswer;
+                
+                if (isCorrect) correct++;
+                
+                questionResults.push({
+                    question: question.question,
+                    userAnswer: userAnswer,
+                    correctAnswer: question.correctAnswer,
+                    isCorrect: isCorrect,
+                    explanation: question.explanation
+                });
+            });
+            
+            const totalQuestions = currentExam.questions.length;
+            const score = Math.round((correct / totalQuestions) * 100);
+            const timeTaken = (currentExam.timeLimit * 60) - timeRemaining;
+            const passed = score >= currentExam.passingScore;
+            
+            return {
+                correct,
+                totalQuestions,
+                score,
+                timeTaken,
+                passed,
+                questionResults
+            };
+        }
+
+        function displayResults(results, reason) {
+            // Update score
+            finalScore.textContent = results.score;
+            
+            // Update stats
+            accuracyStat.textContent = `${results.score}%`;
+            timeStat.textContent = formatTime(results.timeTaken);
+            questionsStat.textContent = `${results.correct}/${results.totalQuestions}`;
+            statusStat.textContent = results.passed ? 'PASSED' : 'FAILED';
+            statusStat.style.color = results.passed ? 'var(--correct-green)' : 'var(--wrong-red)';
+            
+            // Update final score color based on pass/fail
+            if (results.passed) {
+                finalScore.style.color = 'var(--correct-green)';
+            } else {
+                finalScore.style.color = 'var(--wrong-red)';
+            }
+            
+            // Create breakdown
+            resultBreakdown.innerHTML = '';
+            results.questionResults.forEach((result, index) => {
+                const breakdownItem = document.createElement('div');
+                breakdownItem.className = 'breakdown-item slide-in';
+                
+                let statusText = 'Skipped';
+                let statusColor = 'var(--tactical-gray)';
+                
+                if (result.userAnswer !== null) {
+                    if (result.isCorrect) {
+                        statusText = 'Correct';
+                        statusColor = 'var(--correct-green)';
+                    } else {
+                        statusText = 'Wrong';
+                        statusColor = 'var(--wrong-red)';
+                    }
+                }
+                
+                breakdownItem.innerHTML = `
+                    <div class="question-result">
+                        <div class="result-indicator ${result.userAnswer === null ? 'skipped' : result.isCorrect ? 'correct' : 'wrong'}"></div>
+                        <div>
+                            <strong>Question ${index + 1}:</strong> ${result.question.substring(0, 50)}...
+                        </div>
+                    </div>
+                    <div style="color: ${statusColor}; font-family: 'Share Tech Mono', monospace;">
+                        ${statusText}
+                    </div>
+                `;
+                
+                resultBreakdown.appendChild(breakdownItem);
+            });
+            
+            // Show reason message
+            let reasonMessage = '';
+            if (reason === 'TIME_UP') {
+                reasonMessage = 'Exam terminated due to time limit.';
+            } else if (reason === 'MANUAL_SUBMIT') {
+                reasonMessage = 'Exam submitted successfully.';
+            }
+            
+            if (reasonMessage) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'tactical-alert';
+                messageDiv.style.marginBottom = '20px';
+                messageDiv.innerHTML = `<i class="fas fa-info-circle me-2"></i> ${reasonMessage}`;
+                resultScreen.querySelector('.result-header').appendChild(messageDiv);
+            }
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Review Answers
+        function reviewAnswers() {
+            currentQuestionIndex = 0;
+            examHeader.style.display = 'block';
+            examScreen.style.display = 'flex';
+            resultScreen.style.display = 'none';
+            
+            // Stop timer for review mode
+            clearInterval(timerInterval);
+            timerDisplay.textContent = 'REVIEW MODE';
+            timerDisplay.style.color = 'var(--olive-light)';
+            
+            loadQuestion();
+            
+            // Change submit button to return to results
+            submitBtn.innerHTML = '<i class="fas fa-arrow-left"></i> BACK TO RESULTS';
+            submitBtn.onclick = () => {
+                examHeader.style.display = 'none';
+                examScreen.style.display = 'none';
+                resultScreen.style.display = 'block';
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> SUBMIT';
+                submitBtn.onclick = showSubmitConfirm;
+            };
+        }
+
+        function retryExam() {
+            // Reset to login screen
+            resultScreen.style.display = 'none';
+            loginScreen.style.display = 'block';
+            
+            // Reset form
+            loginForm.reset();
+        }
+
+        // Alert Modal
+        function showAlert(title, message, type, showCancel = true) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            
+            // Set icon based on type
+            switch(type) {
+                case 'error':
+                    modalIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                    modalIcon.style.color = 'var(--wrong-red)';
+                    break;
+                case 'warning':
+                    modalIcon.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
+                    modalIcon.style.color = 'var(--warning-orange)';
+                    break;
+                case 'success':
+                    modalIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                    modalIcon.style.color = 'var(--correct-green)';
+                    break;
+                default:
+                    modalIcon.innerHTML = '<i class="fas fa-info-circle"></i>';
+                    modalIcon.style.color = 'var(--olive-light)';
+            }
+            
+            // Show/hide cancel button
+            modalCancelBtn.style.display = showCancel ? 'block' : 'none';
+            
+            // Show modal
+            alertModal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            alertModal.style.display = 'none';
+        }
+
+        function handleModalConfirm() {
+            // Default behavior - just close
+            closeModal();
+        }
+
+        // Anti-cheat Features
+        function handleVisibilityChange() {
+            if (document.hidden && examStarted) {
+                tabSwitchCount++;
+                
+                // Show warning
+                antiCheatWarning.style.display = 'block';
+                setTimeout(() => {
+                    antiCheatWarning.style.display = 'none';
+                }, 5000);
+                
+                // Log the violation
+                console.log(`Tab switch detected. Count: ${tabSwitchCount}`);
+                
+                // Show warning after multiple violations
+                if (tabSwitchCount === 3) {
+                    showAlert(
+                        'SECURITY VIOLATION',
+                        'Multiple tab switches detected. Further violations may result in exam termination.',
+                        'error',
+                        false
+                    );
+                }
+                
+                // Auto-submit after too many violations
+                if (tabSwitchCount >= 5) {
+                    showAlert(
+                        'EXAM TERMINATED',
+                        'Exam terminated due to multiple security violations.',
+                        'error',
+                        false
+                    );
+                    setTimeout(() => {
+                        endExam('SECURITY_VIOLATION');
+                    }, 3000);
+                }
+            }
+        }
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (!examStarted) return;
+            
+            switch(e.key) {
+                case '1':
+                case 'a':
+                    selectOption(0);
+                    break;
+                case '2':
+                case 'b':
+                    selectOption(1);
+                    break;
+                case '3':
+                case 'c':
+                    selectOption(2);
+                    break;
+                case '4':
+                case 'd':
+                    selectOption(3);
+                    break;
+                case 'ArrowLeft':
+                    if (currentQuestionIndex > 0) {
+                        prevQuestion();
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (currentQuestionIndex < currentExam.questions.length - 1) {
+                        nextQuestion();
+                    }
+                    break;
+                case 'm':
+                case 'M':
+                    toggleMark();
+                    break;
+                case 'Enter':
+                    if (currentQuestionIndex < currentExam.questions.length - 1) {
+                        nextQuestion();
+                    }
+                    break;
+                case 'Escape':
+                    showSubmitConfirm();
+                    break;
+            }
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

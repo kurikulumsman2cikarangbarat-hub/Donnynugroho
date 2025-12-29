@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Generator Demo | EdTech Tactical Operations</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --olive-primary: #556B2F;
+            --olive-secondary: #6B8E23;
+            --olive-light: #9AB973;
+            --olive-dark: #4A5A23;
+            --tactical-black: #0A0F0A;
+            --tactical-gray: #2C3E2C;
+            --hazard-yellow: #FFD700;
+            --gold: #FFD700;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--tactical-black);
+            color: #D4E6B5;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(85, 107, 47, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(74, 90, 35, 0.1) 0%, transparent 20%);
+        }
+
+        .military-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(85, 107, 47, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 107, 47, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Header */
+        .cert-header {
+            background: rgba(10, 15, 10, 0.95);
+            border-bottom: 1px solid var(--olive-dark);
+            padding: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cert-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--hazard-yellow), #CC9900);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--hazard-yellow);
+        }
+
+        .cert-logo i {
+            color: var(--tactical-black);
+            font-size: 1.8rem;
+        }
+
+        .header-title h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--hazard-yellow), #FFE55C);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        .header-title .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-top: 2px;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: rgba(10, 15, 10, 0.85);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        .panel-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--olive-dark);
+        }
+
+        .panel-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--hazard-yellow);
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .panel-header p {
+            color: var(--olive-light);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Template Selection */
+        .template-selection {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--olive-light);
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--olive-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .template-card {
+            background: rgba(20, 30, 20, 0.8);
+            border: 2px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-card:hover {
+            border-color: var(--olive-secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(85, 107, 47, 0.3);
+        }
+
+        .template-card.selected {
+            border-color: var(--hazard-yellow);
+            background: rgba(255, 215, 0, 0.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .template-icon {
+            font-size: 3rem;
+            color: var(--olive-light);
+            margin-bottom: 15px;
+        }
+
+        .template-card.selected .template-icon {
+            color: var(--hazard-yellow);
+        }
+
+        .template-name {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--olive-light);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .template-card.selected .template-name {
+            color: var(--hazard-yellow);
+        }
+
+        .template-desc {
+            font-size: 0.9rem;
+            color: #9AB973;
+            line-height: 1.4;
+        }
+
+        /* Form Section */
+        .form-section {
+            margin-bottom: 40px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .form-control {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            color: var(--olive-light);
+            padding: 12px 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--hazard-yellow);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .form-control.select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%239AB973' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .form-hint {
+            font-size: 0.8rem;
+            color: #9AB973;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* Certificate Preview */
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .preview-container {
+            background: rgba(10, 15, 10, 0.9);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 40px;
+            min-height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Certificate Templates */
+        .certificate {
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Template 1: Classic Gold */
+        .certificate.classic {
+            background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+            border: 15px solid transparent;
+            border-image: linear-gradient(45deg, var(--gold), var(--bronze), var(--gold)) 1;
+        }
+
+        .classic .border-decoration {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 2px solid rgba(205, 127, 50, 0.3);
+            border-radius: 5px;
+        }
+
+        .classic .corner-decoration {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--gold);
+        }
+
+        .classic .corner-tl {
+            top: 30px;
+            left: 30px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .classic .corner-tr {
+            top: 30px;
+            right: 30px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .classic .corner-bl {
+            bottom: 30px;
+            left: 30px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .classic .corner-br {
+            bottom: 30px;
+            right: 30px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .classic .header {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .classic .header h1 {
+            font-family: 'Times New Roman', serif;
+            font-size: 2.5rem;
+            color: #8B4513;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 5px;
+        }
+
+        .classic .header .subtitle {
+            font-family: 'Times New Roman', serif;
+            font-size: 1.2rem;
+            color: #8B4513;
+            letter-spacing: 2px;
+        }
+
+        .classic .content {
+            text-align: center;
+            margin: 40px 60px;
+        }
+
+        .classic .presented-to {
+            font-family: 'Georgia', serif;
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .classic .recipient-name {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 3.5rem;
+            color: #8B4513;
+            margin: 20px 0;
+            text-decoration: underline;
+            text-decoration-color: var(--gold);
+        }
+
+        .classic .certificate-text {
+            font-family: 'Georgia', serif;
+            font-size: 1.1rem;
+            color: #333;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .classic .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding: 0 40px;
+        }
+
+        .classic .signature {
+            text-align: center;
+        }
+
+        .classic .signature-line {
+            width: 200px;
+            height: 1px;
+            background: #333;
+            margin: 20px auto;
+        }
+
+        .classic .signature-name {
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .classic .signature-title {
+            font-family: 'Georgia', serif;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Template 2: Modern Blue */
+        .certificate.modern {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border: none;
+        }
+
+        .modern .header-strip {
+            height: 80px;
+            background: linear-gradient(90deg, #2196F3, #1976D2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .modern .header-strip h1 {
+            font-family: 'Arial', sans-serif;
+            font-size: 2rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .modern .content {
+            text-align: center;
+            margin: 30px 50px;
+        }
+
+        .modern .certificate-id {
+            font-family: 'Courier New', monospace;
+            color: #2196F3;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        .modern .presented-to {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .modern .recipient-name {
+            font-family: 'Arial', sans-serif;
+            font-size: 2.5rem;
+            color: #1976D2;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        .modern .certificate-text {
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.5;
+            margin: 20px 0;
+        }
+
+        .modern .achievement {
+            background: #E8F5E9;
+            border-left: 5px solid #4CAF50;
+            padding: 15px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .modern .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding: 0 40px;
+        }
+
+        .modern .signature {
+            text-align: center;
+        }
+
+        .modern .signature-box {
+            width: 150px;
+            height: 80px;
+            background: #F5F5F5;
+            border: 1px solid #BDBDBD;
+            margin-bottom: 10px;
+        }
+
+        /* Template 3: Military Theme */
+        .certificate.military {
+            background: linear-gradient(135deg, #2C3E2C 0%, #1A2512 100%);
+            border: 5px solid var(--olive-secondary);
+            color: #D4E6B5;
+        }
+
+        .military .border-pattern {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--olive-secondary);
+            border-image: repeating-linear-gradient(45deg, var(--olive-secondary), var(--olive-light) 10px) 10;
+        }
+
+        .military .header {
+            text-align: center;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .military .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: var(--hazard-yellow);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        .military .header .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            letter-spacing: 2px;
+        }
+
+        .military .content {
+            text-align: center;
+            margin: 40px 50px;
+        }
+
+        .military .presented-to {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            color: var(--olive-light);
+            margin-bottom: 25px;
+        }
+
+        .military .recipient-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--hazard-yellow);
+            margin: 20px 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .military .certificate-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.1rem;
+            color: #D4E6B5;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .military .operation-code {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border: 1px solid var(--olive-secondary);
+            margin: 20px 0;
+            display: inline-block;
+        }
+
+        .military .signatures {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            padding: 0 40px;
+        }
+
+        .military .signature {
+            text-align: center;
+        }
+
+        .military .signature-line {
+            width: 180px;
+            height: 2px;
+            background: var(--olive-secondary);
+            margin: 20px auto;
+            position: relative;
+        }
+
+        .military .signature-line::before {
+            content: '✧';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--hazard-yellow);
+            background: var(--tactical-black);
+            padding: 0 10px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            color: var(--tactical-black);
+            border: 1px solid var(--olive-secondary);
+            padding: 15px 30px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(85, 107, 47, 0.5);
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--hazard-yellow), #CC9900);
+            border-color: var(--hazard-yellow);
+        }
+
+        .action-btn.primary:hover {
+            background: linear-gradient(135deg, #FFE55C, var(--hazard-yellow));
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #4D8BFF, #2A4FAA);
+            border-color: #4D8BFF;
+        }
+
+        .action-btn.secondary:hover {
+            background: linear-gradient(135deg, #7BA3FF, #4D8BFF);
+        }
+
+        /* Batch Generation */
+        .batch-section {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .batch-input {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+
+        .batch-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(10, 15, 10, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .batch-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--olive-dark);
+        }
+
+        .batch-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Back Button */
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: rgba(10, 15, 10, 0.8);
+            border: 1px solid var(--olive-secondary);
+            color: var(--olive-light);
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: var(--olive-secondary);
+            color: var(--tactical-black);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .template-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .certificate {
+                height: 400px;
+                transform: scale(0.8);
+                transform-origin: center;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .batch-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="military-grid"></div>
+    
+    <div class="back-link">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETURN TO BASE
+        </a>
+    </div>
+
+    <!-- Header -->
+    <header class="cert-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="cert-logo">
+                    <i class="fas fa-award"></i>
+                </div>
+                <div class="header-title">
+                    <h1>CERTIFICATE GENERATOR</h1>
+                    <div class="subtitle">AUTO-CERTIFICATION SYSTEM - DEMO VERSION</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="panel-header">
+                <h2>CREATE CERTIFICATE</h2>
+                <p>Customize and generate professional certificates with military-grade precision</p>
+            </div>
+            
+            <!-- Template Selection -->
+            <div class="template-selection">
+                <h3 class="section-title"><i class="fas fa-palette me-2"></i>SELECT TEMPLATE</h3>
+                <div class="template-grid" id="templateGrid">
+                    <div class="template-card selected" data-template="classic">
+                        <div class="template-icon">
+                            <i class="fas fa-crown"></i>
+                        </div>
+                        <div class="template-name">CLASSIC GOLD</div>
+                        <div class="template-desc">Elegant gold-border certificate with traditional design</div>
+                    </div>
+                    
+                    <div class="template-card" data-template="modern">
+                        <div class="template-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="template-name">MODERN BLUE</div>
+                        <div class="template-desc">Clean, professional design with blue accents</div>
+                    </div>
+                    
+                    <div class="template-card" data-template="military">
+                        <div class="template-icon">
+                            <i class="fas fa-helmet-battle"></i>
+                        </div>
+                        <div class="template-name">TACTICAL OPERATIONS</div>
+                        <div class="template-desc">Military-themed certificate with tactical styling</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificate Details Form -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-edit me-2"></i>CERTIFICATE DETAILS</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user"></i> RECIPIENT NAME
+                        </label>
+                        <input type="text" class="form-control" id="recipientName" placeholder="Enter recipient's name" value="John Doe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-graduation-cap"></i> ACHIEVEMENT
+                        </label>
+                        <select class="form-control select" id="achievementType">
+                            <option value="Completion">Completion of Training</option>
+                            <option value="Excellence">Excellence Award</option>
+                            <option value="Participation">Participation</option>
+                            <option value="Leadership">Leadership</option>
+                            <option value="Innovation">Innovation Award</option>
+                            <option value="Custom">Custom Achievement</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="customAchievementGroup" style="display: none;">
+                        <label class="form-label">
+                            <i class="fas fa-pen"></i> CUSTOM ACHIEVEMENT
+                        </label>
+                        <input type="text" class="form-control" id="customAchievement" placeholder="Enter custom achievement text">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-calendar"></i> DATE ISSUED
+                        </label>
+                        <input type="date" class="form-control" id="issueDate" value="">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-hashtag"></i> CERTIFICATE ID
+                        </label>
+                        <input type="text" class="form-control" id="certificateId" placeholder="Auto-generated" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-university"></i> ISSUING ORGANIZATION
+                        </label>
+                        <input type="text" class="form-control" id="organization" value="EdTech Tactical Operations">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-signature"></i> SIGNATORY 1
+                        </label>
+                        <input type="text" class="form-control" id="signatory1" placeholder="Name of signatory" value="Dr. Sarah Johnson">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user-tie"></i> TITLE 1
+                        </label>
+                        <input type="text" class="form-control" id="title1" placeholder="Title/Position" value="Director of Education">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-signature"></i> SIGNATORY 2
+                        </label>
+                        <input type="text" class="form-control" id="signatory2" placeholder="Name of signatory" value="Prof. Michael Chen">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">
+                            <i class="fas fa-user-tie"></i> TITLE 2
+                        </label>
+                        <input type="text" class="form-control" id="title2" placeholder="Title/Position" value="Head of Operations">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <h3 class="section-title"><i class="fas fa-eye me-2"></i>LIVE PREVIEW</h3>
+                <div class="preview-container">
+                    <div class="certificate classic" id="certificatePreview">
+                        <!-- Certificate content will be generated here -->
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="generateBtn">
+                        <i class="fas fa-sync-alt"></i> UPDATE PREVIEW
+                    </button>
+                    <button class="action-btn secondary" id="downloadPdfBtn">
+                        <i class="fas fa-file-pdf"></i> DOWNLOAD PDF
+                    </button>
+                    <button class="action-btn" id="downloadImageBtn">
+                        <i class="fas fa-image"></i> DOWNLOAD IMAGE
+                    </button>
+                    <button class="action-btn" id="printBtn">
+                        <i class="fas fa-print"></i> PRINT CERTIFICATE
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Batch Generation -->
+            <div class="batch-section">
+                <h3 class="section-title"><i class="fas fa-users me-2"></i>BATCH GENERATION</h3>
+                <p style="color: var(--olive-light); margin-bottom: 15px;">
+                    Generate multiple certificates at once (Demo: Max 5 recipients)
+                </p>
+                
+                <div class="batch-input">
+                    <div class="form-group" style="flex-grow: 1;">
+                        <label class="form-label">ADD RECIPIENT</label>
+                        <input type="text" class="form-control" id="batchName" placeholder="Enter recipient name">
+                    </div>
+                    <button class="action-btn" id="addRecipientBtn">
+                        <i class="fas fa-plus"></i> ADD
+                    </button>
+                </div>
+                
+                <div class="batch-list" id="batchList">
+                    <div class="batch-item">
+                        <span>John Doe</span>
+                        <button class="action-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="removeRecipient(this)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="generateBatchBtn">
+                        <i class="fas fa-bolt"></i> GENERATE ALL (ZIP)
+                    </button>
+                    <button class="action-btn" id="clearBatchBtn">
+                        <i class="fas fa-trash"></i> CLEAR LIST
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Certificate Generator State
+        let selectedTemplate = 'classic';
+        let batchRecipients = ['John Doe'];
+
+        // DOM Elements
+        const templateCards = document.querySelectorAll('.template-card');
+        const certificatePreview = document.getElementById('certificatePreview');
+        const recipientName = document.getElementById('recipientName');
+        const achievementType = document.getElementById('achievementType');
+        const customAchievementGroup = document.getElementById('customAchievementGroup');
+        const customAchievement = document.getElementById('customAchievement');
+        const issueDate = document.getElementById('issueDate');
+        const certificateId = document.getElementById('certificateId');
+        const organization = document.getElementById('organization');
+        const signatory1 = document.getElementById('signatory1');
+        const title1 = document.getElementById('title1');
+        const signatory2 = document.getElementById('signatory2');
+        const title2 = document.getElementById('title2');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadPdfBtn = document.getElementById('downloadPdfBtn');
+        const downloadImageBtn = document.getElementById('downloadImageBtn');
+        const printBtn = document.getElementById('printBtn');
+        const batchName = document.getElementById('batchName');
+        const addRecipientBtn = document.getElementById('addRecipientBtn');
+        const batchList = document.getElementById('batchList');
+        const generateBatchBtn = document.getElementById('generateBatchBtn');
+        const clearBatchBtn = document.getElementById('clearBatchBtn');
+
+        // Initialize
+        function init() {
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            issueDate.value = today;
+            
+            // Generate initial certificate ID
+            generateCertificateId();
+            
+            // Event Listeners
+            templateCards.forEach(card => {
+                card.addEventListener('click', () => selectTemplate(card.dataset.template));
+            });
+            
+            achievementType.addEventListener('change', handleAchievementChange);
+            generateBtn.addEventListener('click', updatePreview);
+            downloadPdfBtn.addEventListener('click', downloadAsPDF);
+            downloadImageBtn.addEventListener('click', downloadAsImage);
+            printBtn.addEventListener('click', printCertificate);
+            addRecipientBtn.addEventListener('click', addRecipient);
+            generateBatchBtn.addEventListener('click', generateBatch);
+            clearBatchBtn.addEventListener('click', clearBatch);
+            
+            // Update preview on form changes
+            const formInputs = document.querySelectorAll('.form-control');
+            formInputs.forEach(input => {
+                input.addEventListener('input', updatePreview);
+                input.addEventListener('change', updatePreview);
+            });
+            
+            // Initial preview
+            updatePreview();
+        }
+
+        // Template Selection
+        function selectTemplate(template) {
+            selectedTemplate = template;
+            
+            // Update template cards
+            templateCards.forEach(card => {
+                if (card.dataset.template === template) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+            
+            // Update preview
+            updatePreview();
+        }
+
+        // Achievement Type Handler
+        function handleAchievementChange() {
+            if (achievementType.value === 'Custom') {
+                customAchievementGroup.style.display = 'block';
+                customAchievement.required = true;
+            } else {
+                customAchievementGroup.style.display = 'none';
+                customAchievement.required = false;
+            }
+            updatePreview();
+        }
+
+        // Generate Certificate ID
+        function generateCertificateId() {
+            const prefix = 'CERT';
+            const year = new Date().getFullYear();
+            const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+            certificateId.value = `${prefix}-${year}-${random}`;
+        }
+
+        // Get Achievement Text
+        function getAchievementText() {
+            if (achievementType.value === 'Custom') {
+                return customAchievement.value || 'Custom Achievement';
+            }
+            
+            const achievements = {
+                'Completion': 'for successfully completing the training program',
+                'Excellence': 'for outstanding performance and excellence',
+                'Participation': 'for active participation and contribution',
+                'Leadership': 'for exemplary leadership and initiative',
+                'Innovation': 'for innovative thinking and creative solutions'
+            };
+            
+            return achievements[achievementType.value] || achievements['Completion'];
+        }
+
+        // Format Date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        // Update Preview
+        function updatePreview() {
+            // Get form values
+            const data = {
+                recipient: recipientName.value || 'John Doe',
+                achievement: getAchievementText(),
+                date: formatDate(issueDate.value),
+                id: certificateId.value,
+                organization: organization.value,
+                signatory1: signatory1.value,
+                title1: title1.value,
+                signatory2: signatory2.value,
+                title2: title2.value
+            };
+            
+            // Clear previous content
+            certificatePreview.innerHTML = '';
+            certificatePreview.className = 'certificate ' + selectedTemplate;
+            
+            // Generate certificate based on template
+            switch(selectedTemplate) {
+                case 'classic':
+                    generateClassicCertificate(data);
+                    break;
+                case 'modern':
+                    generateModernCertificate(data);
+                    break;
+                case 'military':
+                    generateMilitaryCertificate(data);
+                    break;
+            }
+        }
+
+        // Classic Certificate Template
+        function generateClassicCertificate(data) {
+            certificatePreview.innerHTML = `
+                <div class="border-decoration"></div>
+                <div class="corner-decoration corner-tl"></div>
+                <div class="corner-decoration corner-tr"></div>
+                <div class="corner-decoration corner-bl"></div>
+                <div class="corner-decoration corner-br"></div>
+                
+                <div class="header">
+                    <h1>CERTIFICATE</h1>
+                    <div class="subtitle">OF ACHIEVEMENT</div>
+                </div>
+                
+                <div class="content">
+                    <div class="presented-to">THIS CERTIFICATE IS PROUDLY PRESENTED TO</div>
+                    <div class="recipient-name">${data.recipient}</div>
+                    <div class="certificate-text">
+                        In recognition of ${data.achievement} and dedication to excellence in the field of Education Technology.
+                    </div>
+                    <div class="certificate-text">
+                        Awarded this ${data.date} by ${data.organization}.
+                    </div>
+                    <div class="certificate-text" style="margin-top: 30px;">
+                        Certificate ID: <strong>${data.id}</strong>
+                    </div>
+                </div>
+                
+                <div class="signatures">
+                    <div class="signature">
+                        <div class="signature-line"></div>
+                        <div class="signature-name">${data.signatory1}</div>
+                        <div class="signature-title">${data.title1}</div>
+                    </div>
+                    <div class="signature">
+                        <div class="signature-line"></div>
+                        <div class="signature-name">${data.signatory2}</div>
+                        <div class="signature-title">${data.title2}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Modern Certificate Template
+        function generateModernCertificate(data) {
+            certificatePreview.innerHTML = `
+                <div class="header-strip">
+                    <h1>CERTIFICATE OF ACHIEVEMENT</h1>
+                </div>
+                
+                <div class="content">
+                    <div class="certificate-id">ID: ${data.id}</div>
+                    <div class="presented-to">Presented to</div>
+                    <div class="recipient-name">${data.recipient}</div>
+                    
+                    <div class="achievement">
+                        <strong>Achievement:</strong> ${data.achievement}
+                    </div>
+                    
+                    <div class="certificate-text">
+                        This certificate is awarded in recognition of outstanding performance and dedication. 
+                        The recipient has demonstrated exceptional skills and commitment that align with the 
+                        high standards of ${data.organization}.
+                    </div>
+                    
+                    <div class="certificate-text" style="margin-top: 20px;">
+                        Date of Issue: <strong>${data.date}</strong>
+                    </div>
+                </div>
+                
+                <div class="signatures">
+                    <div class="signature">
+                        <div class="signature-box"></div>
+                        <div class="signature-name">${data.signatory1}</div>
+                        <div class="signature-title">${data.title1}</div>
+                    </div>
+                    <div class="signature">
+                        <div class="signature-box"></div>
+                        <div class="signature-name">${data.signatory2}</div>
+                        <div class="signature-title">${data.title2}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Military Certificate Template
+        function generateMilitaryCertificate(data) {
+            certificatePreview.innerHTML = `
+                <div class="border-pattern"></div>
+                
+                <div class="header">
+                    <h1>TACTICAL ACHIEVEMENT CERTIFICATE</h1>
+                    <div class="subtitle">OPERATIONS DIVISION</div>
+                </div>
+                
+                <div class="content">
+                    <div class="presented-to">OPERATIVE DESIGNATION</div>
+                    <div class="recipient-name">${data.recipient.toUpperCase()}</div>
+                    
+                    <div class="certificate-text">
+                        Has been recognized for exceptional performance in ${data.achievement}.
+                        This operative has demonstrated tactical proficiency and strategic thinking
+                        in accordance with the highest standards of ${data.organization}.
+                    </div>
+                    
+                    <div class="operation-code">
+                        OPERATION CODE: <strong>${data.id}</strong>
+                    </div>
+                    
+                    <div class="certificate-text">
+                        Mission Completion Date: <strong>${data.date}</strong>
+                    </div>
+                </div>
+                
+                <div class="signatures">
+                    <div class="signature">
+                        <div class="signature-line"></div>
+                        <div class="signature-name">${data.signatory1}</div>
+                        <div class="signature-title">${data.title1}</div>
+                    </div>
+                    <div class="signature">
+                        <div class="signature-line"></div>
+                        <div class="signature-name">${data.signatory2}</div>
+                        <div class="signature-title">${data.title2}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Download as PDF
+        function downloadAsPDF() {
+            alert('In a real implementation, this would generate and download a PDF using libraries like jsPDF or html2pdf.js.\n\nDemo: Simulating PDF download...');
+            
+            // Simulate download
+            const link = document.createElement('a');
+            link.href = '#';
+            link.download = `Certificate_${certificateId.value}.pdf`;
+            link.click();
+            
+            // Show success message
+            showNotification('PDF download simulated. In production, this would generate actual PDF.');
+        }
+
+        // Download as Image
+        function downloadAsImage() {
+            alert('In a real implementation, this would use html2canvas to capture the certificate as an image.\n\nDemo: Simulating image download...');
+            
+            // Simulate download
+            const link = document.createElement('a');
+            link.href = '#';
+            link.download = `Certificate_${certificateId.value}.png`;
+            link.click();
+            
+            // Show success message
+            showNotification('Image download simulated. In production, this would capture actual screenshot.');
+        }
+
+        // Print Certificate
+        function printCertificate() {
+            const printWindow = window.open('', '_blank');
+            
+            // Get certificate HTML
+            const certificateHTML = certificatePreview.outerHTML;
+            
+            // Create print document
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Certificate - ${certificateId.value}</title>
+                    <style>
+                        body { 
+                            margin: 0;
+                            padding: 20px;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-height: 100vh;
+                            background: #f5f5f5;
+                        }
+                        @media print {
+                            body { background: white; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${certificateHTML}
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            setTimeout(function() {
+                                window.close();
+                            }, 500);
+                        }
+                    <\/script>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+        }
+
+        // Batch Generation Functions
+        function addRecipient() {
+            const name = batchName.value.trim();
+            if (!name) {
+                showNotification('Please enter a recipient name');
+                return;
+            }
+            
+            if (batchRecipients.length >= 5) {
+                showNotification('Demo limit: Maximum 5 recipients');
+                return;
+            }
+            
+            if (batchRecipients.includes(name)) {
+                showNotification('Recipient already in list');
+                return;
+            }
+            
+            batchRecipients.push(name);
+            updateBatchList();
+            batchName.value = '';
+            
+            showNotification(`Added: ${name}`);
+        }
+
+        function updateBatchList() {
+            batchList.innerHTML = '';
+            
+            batchRecipients.forEach((recipient, index) => {
+                const item = document.createElement('div');
+                item.className = 'batch-item';
+                item.innerHTML = `
+                    <span>${recipient}</span>
+                    <button class="action-btn" style="padding: 5px 10px; font-size: 0.8rem;" onclick="removeRecipient(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `;
+                batchList.appendChild(item);
+            });
+        }
+
+        window.removeRecipient = function(index) {
+            batchRecipients.splice(index, 1);
+            updateBatchList();
+            showNotification('Recipient removed');
+        };
+
+        function generateBatch() {
+            if (batchRecipients.length === 0) {
+                showNotification('No recipients in batch');
+                return;
+            }
+            
+            alert(`Batch generation would create ${batchRecipients.length} certificates and download as ZIP file.\n\nRecipients:\n${batchRecipients.join('\n')}\n\nIn production, this would use JSZip library.`);
+            
+            // Simulate processing
+            showNotification(`Processing ${batchRecipients.length} certificates...`);
+            
+            setTimeout(() => {
+                showNotification(`Batch generation complete! Simulating download of ${batchRecipients.length} certificates.`);
+            }, 2000);
+        }
+
+        function clearBatch() {
+            if (batchRecipients.length === 0) return;
+            
+            if (confirm(`Clear all ${batchRecipients.length} recipients?`)) {
+                batchRecipients = [];
+                updateBatchList();
+                showNotification('Batch list cleared');
+            }
+        }
+
+        // Utility Functions
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: rgba(85, 107, 47, 0.9);
+                border: 1px solid var(--olive-secondary);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 4px;
+                font-family: 'Share Tech Mono', monospace;
+                font-size: 0.9rem;
+                z-index: 1000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // Add animation keyframes
+            if (!document.querySelector('#notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tactical Quiz Challenge | EdTech Operations</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --olive-primary: #556B2F;
+            --olive-secondary: #6B8E23;
+            --olive-light: #9AB973;
+            --olive-dark: #4A5A23;
+            --tactical-black: #0A0F0A;
+            --tactical-gray: #2C3E2C;
+            --hazard-yellow: #FFD700;
+            --correct-green: #00FF7F;
+            --wrong-red: #FF4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--tactical-black);
+            color: #D4E6B5;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(85, 107, 47, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(74, 90, 35, 0.1) 0%, transparent 20%);
+        }
+
+        .military-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(85, 107, 47, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 107, 47, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .game-container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(10, 15, 10, 0.85);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--olive-secondary), var(--hazard-yellow), var(--olive-secondary));
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--olive-dark);
+        }
+
+        .game-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--hazard-yellow), var(--olive-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
+
+        .game-subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--olive-light);
+            font-size: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-label {
+            color: var(--olive-light);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            color: var(--hazard-yellow);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .quiz-container {
+            margin-bottom: 30px;
+        }
+
+        .question-counter {
+            color: var(--olive-light);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .question-box {
+            background: rgba(20, 30, 20, 0.6);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .question-box::before {
+            content: 'Q';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--tactical-black);
+            color: var(--hazard-yellow);
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--olive-secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.5;
+            color: #fff;
+            margin-bottom: 0;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .option-btn {
+            background: rgba(28, 40, 28, 0.8);
+            border: 2px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 20px 15px;
+            color: #D4E6B5;
+            font-size: 1.1rem;
+            font-family: 'Rajdhani', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            background: rgba(42, 58, 42, 0.9);
+            border-color: var(--olive-secondary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(85, 107, 47, 0.3);
+        }
+
+        .option-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .option-btn.correct {
+            background: rgba(0, 255, 127, 0.1);
+            border-color: var(--correct-green);
+            color: #fff;
+        }
+
+        .option-btn.wrong {
+            background: rgba(255, 68, 68, 0.1);
+            border-color: var(--wrong-red);
+            color: #fff;
+        }
+
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--tactical-gray);
+            border: 1px solid var(--olive-secondary);
+            border-radius: 4px;
+            text-align: center;
+            line-height: 28px;
+            margin-right: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            color: var(--olive-light);
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            color: var(--tactical-black);
+            border: 1px solid var(--olive-secondary);
+            padding: 12px 30px;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(85, 107, 47, 0.5);
+            letter-spacing: 3px;
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .control-btn.exit {
+            background: linear-gradient(135deg, #8B7355, #4D5D53);
+            border-color: #8B7355;
+        }
+
+        .control-btn.exit:hover {
+            background: linear-gradient(135deg, #A68B6D, #5D6D63);
+        }
+
+        /* Result Screen */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+            display: none;
+        }
+
+        .result-icon {
+            font-size: 4rem;
+            color: var(--hazard-yellow);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .result-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            color: var(--olive-light);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .result-score {
+            font-size: 5rem;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--hazard-yellow);
+            margin: 30px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: #D4E6B5;
+            max-width: 600px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(85, 107, 47, 0.3), rgba(74, 90, 35, 0.2));
+            border: 2px solid var(--hazard-yellow);
+            padding: 10px 30px;
+            border-radius: 4px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--hazard-yellow);
+            margin: 20px auto;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Loading/Start Screen */
+        .start-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .mission-brief {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .mission-brief h3 {
+            color: var(--olive-light);
+            font-family: 'Share Tech Mono', monospace;
+            border-bottom: 1px solid var(--olive-dark);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .mission-brief ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .mission-brief li {
+            margin-bottom: 10px;
+            color: #D4E6B5;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .mission-brief li:before {
+            content: '▶';
+            color: var(--olive-secondary);
+            position: absolute;
+            left: 0;
+            font-size: 0.8rem;
+        }
+
+        .tactical-alert {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--hazard-yellow);
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--hazard-yellow);
+        }
+
+        .blink {
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            background: rgba(10, 15, 10, 0.8);
+            border: 1px solid var(--olive-secondary);
+            color: var(--olive-light);
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            background: var(--olive-secondary);
+            color: var(--tactical-black);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="military-grid"></div>
+    
+    <div class="back-link">
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> RETURN TO BASE
+        </a>
+    </div>
+
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div class="start-screen" id="startScreen">
+            <div class="game-header">
+                <h1 class="game-title">TACTICAL QUIZ CHALLENGE</h1>
+                <div class="game-subtitle">EDUCATION TECHNOLOGY OPERATIONS</div>
+            </div>
+            
+            <div class="mission-brief">
+                <h3><i class="fas fa-scroll me-2"></i>MISSION BRIEFING</h3>
+                <p style="color: var(--olive-light); margin-bottom: 20px;">
+                    Operative, your mission is to test your knowledge of Educational Technology concepts. 
+                    This tactical assessment will determine your readiness for digital learning operations.
+                </p>
+                
+                <h4>OBJECTIVES:</h4>
+                <ul>
+                    <li>Answer 10 questions about EdTech concepts</li>
+                    <li>Complete the mission within time constraints</li>
+                    <li>Achieve maximum accuracy for tactical advantage</li>
+                    <li>Earn rank based on performance</li>
+                </ul>
+                
+                <div class="tactical-alert mt-4">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>ALERT:</strong> Each correct answer earns 100 points. Mission failure results in demotion.
+                </div>
+            </div>
+            
+            <div class="stats-bar" style="justify-content: center;">
+                <div class="stat-item">
+                    <div class="stat-label">QUESTIONS</div>
+                    <div class="stat-value">10</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">TIME LIMIT</div>
+                    <div class="stat-value">∞</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">PASS SCORE</div>
+                    <div class="stat-value">700</div>
+                </div>
+            </div>
+            
+            <button class="control-btn" id="startBtn" style="font-size: 1.2rem; padding: 15px 50px;">
+                <i class="fas fa-play me-2"></i> INITIATE MISSION
+            </button>
+        </div>
+
+        <!-- Game Screen -->
+        <div class="game-screen" id="gameScreen" style="display: none;">
+            <div class="game-header">
+                <h1 class="game-title" style="font-size: 2rem;">TACTICAL QUIZ CHALLENGE</h1>
+                <div class="game-subtitle">EDUCATION TECHNOLOGY OPERATIONS</div>
+            </div>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-label">QUESTIONS</div>
+                    <div class="stat-value"><span id="currentQuestion">1</span>/<span id="totalQuestions">10</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">SCORE</div>
+                    <div class="stat-value"><span id="score">0</span></div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">ACCURACY</div>
+                    <div class="stat-value"><span id="accuracy">0</span>%</div>
+                </div>
+            </div>
+            
+            <div class="quiz-container">
+                <div class="question-counter">
+                    <i class="fas fa-question-circle me-2"></i>
+                    QUESTION <span id="qNum">1</span> OF 10
+                </div>
+                
+                <div class="question-box">
+                    <div class="question-text" id="questionText">
+                        Loading question...
+                    </div>
+                </div>
+                
+                <div class="options-grid" id="optionsContainer">
+                    <!-- Options will be inserted here by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="game-controls">
+                <button class="control-btn exit" id="exitBtn">
+                    <i class="fas fa-sign-out-alt me-2"></i> ABORT MISSION
+                </button>
+                <button class="control-btn" id="nextBtn" disabled>
+                    <i class="fas fa-forward me-2"></i> NEXT QUESTION
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div class="result-screen" id="resultScreen">
+            <div class="result-icon">
+                <i class="fas fa-medal"></i>
+            </div>
+            
+            <h2 class="result-title">MISSION COMPLETE</h2>
+            
+            <div class="rank-badge" id="rankBadge">
+                RECRUIT
+            </div>
+            
+            <div class="result-score" id="finalScore">
+                0
+            </div>
+            
+            <div class="result-message" id="resultMessage">
+                Mission analysis in progress...
+            </div>
+            
+            <div class="stats-bar" style="max-width: 500px; margin: 30px auto;">
+                <div class="stat-item">
+                    <div class="stat-label">SCORE</div>
+                    <div class="stat-value" id="rsScore">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">ACCURACY</div>
+                    <div class="stat-value" id="rsAccuracy">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">TIME</div>
+                    <div class="stat-value" id="rsTime">0s</div>
+                </div>
+            </div>
+            
+            <div class="game-controls" style="justify-content: center; gap: 20px;">
+                <button class="control-btn exit" id="restartBtn">
+                    <i class="fas fa-redo me-2"></i> NEW MISSION
+                </button>
+                <button class="control-btn" onclick="window.location.href='index.html'">
+                    <i class="fas fa-home me-2"></i> RETURN TO BASE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game Questions Database
+        const questions = [
+            {
+                question: "Apa singkatan dari LMS dalam konteks pendidikan digital?",
+                options: [
+                    "Learning Management System",
+                    "Lesson Management Software",
+                    "Learning Media System",
+                    "Lesson Media Software"
+                ],
+                correct: 0,
+                explanation: "LMS adalah Learning Management System, platform untuk mengelola dan menyampaikan materi pembelajaran online."
+            },
+            {
+                question: "Manakah yang BUKAN termasuk fitur Google Workspace for Education?",
+                options: [
+                    "Google Classroom",
+                    "Google Meet",
+                    "Google Forms",
+                    "Google Store"
+                ],
+                correct: 3,
+                explanation: "Google Store adalah toko aplikasi, bukan bagian dari Google Workspace for Education."
+            },
+            {
+                question: "Apa tujuan utama dari gamifikasi dalam pendidikan?",
+                options: [
+                    "Mengganti guru dengan komputer",
+                    "Meningkatkan motivasi dan keterlibatan siswa",
+                    "Menghemat biaya pendidikan",
+                    "Menghilangkan ujian tradisional"
+                ],
+                correct: 1,
+                explanation: "Gamifikasi menggunakan elemen permainan untuk meningkatkan motivasi dan keterlibatan siswa dalam pembelajaran."
+            },
+            {
+                question: "Apa itu pembelajaran blended/hybrid?",
+                options: [
+                    "Pembelajaran hanya secara online",
+                    "Pembelajaran hanya secara tatap muka",
+                    "Kombinasi pembelajaran online dan tatap muka",
+                    "Pembelajaran melalui TV"
+                ],
+                correct: 2,
+                explanation: "Pembelajaran blended/hybrid menggabungkan keunggulan pembelajaran online dan tatap muka tradisional."
+            },
+            {
+                question: "Manakah yang merupakan contoh alat evaluasi digital?",
+                options: [
+                    "Google Forms",
+                    "Kahoot!",
+                    "Quizizz",
+                    "Semua benar"
+                ],
+                correct: 3,
+                explanation: "Ketiga alat tersebut (Google Forms, Kahoot!, Quizizz) adalah contoh alat evaluasi digital."
+            },
+            {
+                question: "Apa fungsi utama dari aplikasi Google Classroom?",
+                options: [
+                    "Membuat video pembelajaran",
+                    "Mengelola kelas dan tugas digital",
+                    "Mengganti peran guru sepenuhnya",
+                    "Hanya untuk mengirim email"
+                ],
+                correct: 1,
+                explanation: "Google Classroom membantu guru mengelola kelas, berbagi materi, dan memberikan tugas secara digital."
+            },
+            {
+                question: "Apa itu pembelajaran diferensiasi?",
+                options: [
+                    "Pembelajaran yang sama untuk semua siswa",
+                    "Pembelajaran sesuai kebutuhan individu siswa",
+                    "Pembelajaran tanpa kurikulum",
+                    "Pembelajaran hanya untuk siswa pandai"
+                ],
+                correct: 1,
+                explanation: "Pembelajaran diferensiasi menyesuaikan metode, materi, dan penilaian dengan kebutuhan individu siswa."
+            },
+            {
+                question: "Manakah yang BUKAN manfaat penggunaan AI dalam pendidikan?",
+                options: [
+                    "Personalisasi pembelajaran",
+                    "Otomatisasi penilaian",
+                    "Mengganti peran guru sepenuhnya",
+                    "Analisis data pembelajaran"
+                ],
+                correct: 2,
+                explanation: "AI tidak mengganti peran guru, tetapi membantu dan meningkatkan efektivitas pengajaran."
+            },
+            {
+                question: "Apa itu microlearning?",
+                options: [
+                    "Pembelajaran dalam durasi singkat dengan fokus sempit",
+                    "Pembelajaran dengan mikroskop",
+                    "Pembelajaran untuk anak kecil",
+                    "Pembelajaran dengan perangkat kecil"
+                ],
+                correct: 0,
+                explanation: "Microlearning membagi materi menjadi unit-unit kecil yang mudah dicerna dalam waktu singkat."
+            },
+            {
+                question: "Apa tujuan dari penilaian formatif?",
+                options: [
+                    "Memberi nilai akhir siswa",
+                    "Memantau perkembangan belajar siswa",
+                    "Menentukan kelulusan",
+                    "Membandingkan siswa satu sama lain"
+                ],
+                correct: 1,
+                explanation: "Penilaian formatif bertujuan memantau perkembangan belajar siswa untuk perbaikan proses pembelajaran."
+            }
+        ];
+
+        // Game Variables
+        let currentQuestion = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let gameActive = false;
+        let startTime;
+        let selectedAnswer = null;
+        let questionsAnswered = 0;
+
+        // DOM Elements
+        const startScreen = document.getElementById('startScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const startBtn = document.getElementById('startBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const exitBtn = document.getElementById('exitBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const scoreElement = document.getElementById('score');
+        const accuracyElement = document.getElementById('accuracy');
+        const currentQuestionElement = document.getElementById('currentQuestion');
+        const finalScoreElement = document.getElementById('finalScore');
+        const resultMessageElement = document.getElementById('resultMessage');
+        const rankBadgeElement = document.getElementById('rankBadge');
+        const rsScoreElement = document.getElementById('rsScore');
+        const rsAccuracyElement = document.getElementById('rsAccuracy');
+        const rsTimeElement = document.getElementById('rsTime');
+
+        // Initialize Game
+        function initGame() {
+            currentQuestion = 0;
+            score = 0;
+            correctAnswers = 0;
+            gameActive = true;
+            questionsAnswered = 0;
+            startTime = new Date();
+            updateStats();
+            loadQuestion();
+        }
+
+        // Load Question
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                endGame();
+                return;
+            }
+
+            const q = questions[currentQuestion];
+            questionText.textContent = q.question;
+            currentQuestionElement.textContent = currentQuestion + 1;
+            
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+            
+            // Create new options
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            q.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.innerHTML = `
+                    <span class="option-letter">${optionLetters[index]}</span>
+                    ${option}
+                `;
+                button.dataset.index = index;
+                button.addEventListener('click', () => selectAnswer(index));
+                optionsContainer.appendChild(button);
+            });
+            
+            // Reset UI
+            nextBtn.disabled = true;
+            selectedAnswer = null;
+        }
+
+        // Select Answer
+        function selectAnswer(index) {
+            if (selectedAnswer !== null || !gameActive) return;
+            
+            selectedAnswer = index;
+            const q = questions[currentQuestion];
+            const options = document.querySelectorAll('.option-btn');
+            
+            // Mark correct/wrong answers
+            options.forEach((btn, i) => {
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === index && i !== q.correct) {
+                    btn.classList.add('wrong');
+                }
+                btn.disabled = true;
+            });
+            
+            // Update score if correct
+            if (index === q.correct) {
+                score += 100;
+                correctAnswers++;
+            }
+            
+            questionsAnswered++;
+            updateStats();
+            nextBtn.disabled = false;
+        }
+
+        // Update Statistics
+        function updateStats() {
+            scoreElement.textContent = score;
+            const accuracy = questionsAnswered > 0 ? Math.round((correctAnswers / questionsAnswered) * 100) : 0;
+            accuracyElement.textContent = accuracy;
+        }
+
+        // Next Question
+        function nextQuestion() {
+            if (selectedAnswer === null) return;
+            
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        // End Game
+        function endGame() {
+            gameActive = false;
+            gameScreen.style.display = 'none';
+            resultScreen.style.display = 'block';
+            
+            const totalTime = Math.floor((new Date() - startTime) / 1000);
+            const accuracy = Math.round((correctAnswers / questions.length) * 100);
+            
+            // Calculate rank
+            let rank, message;
+            if (score >= 900) {
+                rank = "TACTICAL COMMANDER";
+                message = "Operasi luar biasa! Anda telah menunjukkan penguasaan penuh atas teknologi pendidikan. Siap untuk misi tingkat tinggi.";
+            } else if (score >= 700) {
+                rank = "EDTECH SPECIALIST";
+                message = "Performa sangat baik! Pengetahuan Anda tentang teknologi pendidikan sangat solid. Lanjutkan pengembangan!";
+            } else if (score >= 500) {
+                rank = "DIGITAL OPERATIVE";
+                message = "Misi berhasil! Anda memiliki pemahaman dasar yang baik tentang teknologi pendidikan. Tingkatkan terus kemampuan!";
+            } else {
+                rank = "RECRUIT";
+                message = "Misi memerlukan perbaikan. Pelajari lebih lanjut tentang teknologi pendidikan dan coba lagi!";
+            }
+            
+            // Update result screen
+            finalScoreElement.textContent = score;
+            resultMessageElement.textContent = message;
+            rankBadgeElement.textContent = rank;
+            rsScoreElement.textContent = score;
+            rsAccuracyElement.textContent = accuracy + '%';
+            rsTimeElement.textContent = totalTime + 's';
+            
+            // Special effects for high scores
+            if (score >= 700) {
+                rankBadgeElement.style.boxShadow = '0 0 20px rgba(255, 215, 0, 0.5)';
+                rankBadgeElement.style.animation = 'pulse 1.5s infinite';
+            }
+        }
+
+        // Start Game
+        startBtn.addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            initGame();
+        });
+
+        // Next Button
+        nextBtn.addEventListener('click', nextQuestion);
+
+        // Exit Button
+        exitBtn.addEventListener('click', () => {
+            if (confirm("Abort mission? Progress will be lost.")) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Restart Button
+        restartBtn.addEventListener('click', () => {
+            resultScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            initGame();
+        });
+
+        // Keyboard Controls
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            
+            switch(e.key) {
+                case '1':
+                case 'a':
+                    selectAnswer(0);
+                    break;
+                case '2':
+                case 'b':
+                    selectAnswer(1);
+                    break;
+                case '3':
+                case 'c':
+                    selectAnswer(2);
+                    break;
+                case '4':
+                case 'd':
+                    selectAnswer(3);
+                    break;
+                case 'Enter':
+                case ' ':
+                    if (nextBtn.disabled === false) {
+                        nextQuestion();
+                    }
+                    break;
+                case 'Escape':
+                    if (confirm("Abort mission?")) {
+                        window.location.href = 'index.html';
+                    }
+                    break;
+            }
+        });
+
+        // Add to demos.html integration
+        function addToDemosIntegration() {
+            // This function would be called from demos.html if needed
+            console.log("Tactical Quiz Challenge loaded successfully.");
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Tactical Quiz Challenge initialized");
+        });
+    </script>
+</body>
+</html>
