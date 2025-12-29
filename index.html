@@ -825,7 +825,7 @@
             <div class="row g-4">
                 <!-- Demo 1: CBT Online System -->
                 <div class="col-md-6">
-                    <div class="demo-box" onclick="openDemo('cbt')">
+    <div class="demo-box" onclick="openDemo('cbt')">  <!-- Tetap 'cbt' -->
                         <div class="d-flex align-items-center mb-3">
                             <div class="demo-icon">
                                 <i class="fas fa-desktop" style="color: var(--olive-light); font-size: 1.5rem;"></i>
@@ -845,7 +845,7 @@
                 
                 <!-- Demo 2: Educational Game -->
                 <div class="col-md-6">
-                    <div class="demo-box" onclick="openDemo('game')">
+    <div class="demo-box" onclick="openDemo('game')">  <!-- Tetap 'game' -->
                         <div class="d-flex align-items-center mb-3">
                             <div class="demo-icon">
                                 <i class="fas fa-gamepad" style="color: var(--olive-light); font-size: 1.5rem;"></i>
@@ -1023,27 +1023,29 @@
         });
 
         // 5. DEMO FUNCTIONS
-        function openDemo(type) {
-            const demoUrls = {
-                'cbt': 'https://donny-nugroho.github.io/CBT-Online/',
-                'game': 'https://donny-nugroho.github.io/Education-Game-Demo/',
-                'spmb': 'https://spmb-demo.glitch.me/',
-                'cert': 'https://cert-generator-demo.netlify.app/'
-            };
-            
-            if(demoUrls[type]) {
-                window.open(demoUrls[type], '_blank');
-            } else {
-                Swal.fire({
-                    icon: 'info',
-                    title: 'DEMO UNAVAILABLE',
-                    text: 'Demo sedang dalam pengembangan.',
-                    background: '#0A0F0A',
-                    color: '#D4E6B5'
-                });
-            }
-        }
+        // Update di bagian JavaScript index.html
+// Cari fungsi openDemo() dan update:
 
+function openDemo(type) {
+    const demoUrls = {
+        'cbt': 'cbt-online.html',        // Diubah
+        'game': 'tactical-quiz.html',    // Diubah  
+        'spmb': 'https://spmb-demo.glitch.me/',
+        'cert': 'https://cert-generator-demo.netlify.app/'
+    };
+    
+    if(demoUrls[type]) {
+        window.open(demoUrls[type], '_blank');
+    } else {
+        Swal.fire({
+            icon: 'info',
+            title: 'DEMO UNAVAILABLE',
+            text: 'Demo sedang dalam pengembangan.',
+            background: '#0A0F0A',
+            color: '#D4E6B5'
+        });
+    }
+}
         // 6. GOOGLE SHEETS + QR CODE + CATALOG LOGIC
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxjO_gkE4X9N5zLqY-_eQqVLP0sFUSsA_L1Mw_Lwl6m-0x4VSrZjOLhG8do_zDIfHOwiA/exec';
         const form = document.forms['submit-to-google-sheet'];
