@@ -1028,10 +1028,10 @@
 
 function openDemo(type) {
     const demoUrls = {
-        'cbt': 'cbt-online.html',        // Diubah
-        'game': 'tactical-quiz.html',    // Diubah  
-        'spmb': 'https://spmb-demo.glitch.me/',
-        'cert': 'https://cert-generator-demo.netlify.app/'
+        'cbt': 'cbt-online.html',
+        'game': 'tactical-quiz.html',
+        'spmb': 'spmb-demo.html',           // Diubah
+        'cert': 'certificate-generator.html' // Diubah
     };
     
     if(demoUrls[type]) {
@@ -1045,8 +1045,7 @@ function openDemo(type) {
             color: '#D4E6B5'
         });
     }
-}
-        // 6. GOOGLE SHEETS + QR CODE + CATALOG LOGIC
+}        // 6. GOOGLE SHEETS + QR CODE + CATALOG LOGIC
         const scriptURL = 'https://script.google.com/macros/s/AKfycbxjO_gkE4X9N5zLqY-_eQqVLP0sFUSsA_L1Mw_Lwl6m-0x4VSrZjOLhG8do_zDIfHOwiA/exec';
         const form = document.forms['submit-to-google-sheet'];
         const btn = document.querySelector('button[type="submit"]');
