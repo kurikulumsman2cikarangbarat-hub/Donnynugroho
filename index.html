@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Donny Nugroho | EdTech Tactical Operations</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        /* --- CORE MILITARY STYLES --- */
+        :root {
+            --olive-primary: #556B2F;
+            --olive-secondary: #6B8E23;
+            --olive-light: #9AB973;
+            --olive-dark: #4A5A23;
+            --camo-green: #4D5D53;
+            --camo-brown: #8B7355;
+            --tactical-black: #0A0F0A;
+            --tactical-gray: #2C3E2C;
+            --hazard-yellow: #FFD700;
+            --glow-green: #7CFC00;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--tactical-black);
+            color: #D4E6B5;
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(85, 107, 47, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(74, 90, 35, 0.1) 0%, transparent 20%);
+        }
+
+        #particles-js {
+            position: absolute; width: 100%; height: 100%; z-index: -1;
+            background: 
+                linear-gradient(135deg, #0A0F0A 0%, #1A2512 100%);
+        }
+
+        /* --- TACTICAL STATUS BAR --- */
+        .system-status {
+            position: absolute; top: 20px; right: 30px;
+            font-family: 'Share Tech Mono', monospace; font-size: 0.9rem;
+            color: var(--olive-light); text-align: right; z-index: 100; opacity: 0.9;
+            letter-spacing: 1px; border-right: 2px solid var(--olive-secondary); padding-right: 15px;
+            text-shadow: 0 0 5px rgba(124, 252, 0, 0.3);
+            background: rgba(10, 15, 10, 0.8);
+            padding: 8px 15px;
+            border-radius: 0 4px 4px 0;
+            border-top: 1px solid var(--olive-dark);
+            border-bottom: 1px solid var(--olive-dark);
+        }
+        .blink { animation: blinker 1s linear infinite; }
+        @keyframes blinker { 
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* --- PROFILE CARD --- */
+        .profile-card { 
+            text-align: center; z-index: 10; animation: fadeIn 2s ease; 
+            width: 100%; max-width: 900px; padding: 0 20px; 
+            margin-bottom: 80px;
+            background: rgba(10, 15, 10, 0.7);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+        
+        .avatar-glow {
+            width: 180px; height: 180px; border-radius: 50%;
+            border: 3px solid var(--olive-secondary); padding: 5px;
+            box-shadow: 
+                0 0 20px rgba(85, 107, 47, 0.5), 
+                inset 0 0 15px rgba(107, 142, 35, 0.3);
+            object-fit: cover; 
+            animation: tacticalPulse 4s infinite;
+            background: linear-gradient(145deg, #1A2512, #0A0F0A);
+        }
+
+        @keyframes tacticalPulse {
+            0% { box-shadow: 0 0 10px rgba(85, 107, 47, 0.5), inset 0 0 10px rgba(107, 142, 35, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(85, 107, 47, 0.8), inset 0 0 20px rgba(107, 142, 35, 0.5); }
+            100% { box-shadow: 0 0 10px rgba(85, 107, 47, 0.5), inset 0 0 10px rgba(107, 142, 35, 0.3); }
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 3.5rem;
+            text-transform: uppercase; letter-spacing: 4px; margin-top: 20px;
+            background: linear-gradient(90deg, #D4E6B5, var(--olive-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(154, 185, 115, 0.3);
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--olive-secondary), transparent);
+        }
+
+        .role-badge {
+            background: linear-gradient(135deg, rgba(85, 107, 47, 0.3), rgba(74, 90, 35, 0.2));
+            border: 1px solid var(--olive-secondary);
+            padding: 8px 30px; border-radius: 2px;
+            letter-spacing: 3px; font-weight: bold; font-family: 'Orbitron', sans-serif;
+            color: var(--olive-light); display: inline-block; margin-top: 15px;
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- TYPING WRAPPER --- */
+        .typing-wrapper {
+            margin-top: 1.5rem;
+            font-size: 1.3rem;
+            color: rgba(212, 230, 181, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            min-height: 60px;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        
+        #text-rotator {
+            display: inline-block;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease;
+            opacity: 1;
+            transform: translateY(0);
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(154, 185, 115, 0.3);
+            color: var(--olive-light);
+        }
+        
+        #text-rotator.fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        /* --- TACTICAL DOCK NAVIGATION --- */
+        .dock-container {
+            position: fixed;
+            bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(42, 52, 32, 0.9); backdrop-filter: blur(15px);
+            padding: 15px 35px; border-radius: 4px;
+            display: flex; gap: 25px;
+            border: 1px solid var(--olive-dark);
+            box-shadow: 
+                0 5px 20px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            z-index: 100;
+            width: auto;
+            max-width: 95%;
+        }
+
+        .dock-item {
+            width: 60px; height: 60px; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; color: #D4E6B5; 
+            background: linear-gradient(145deg, #2C3E2C, #1A2512);
+            transition: all 0.3s; cursor: pointer; 
+            border: 1px solid var(--olive-dark);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dock-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(107, 142, 35, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .dock-item:hover::before {
+            left: 100%;
+        }
+
+        .dock-item:hover {
+            transform: translateY(-10px) scale(1.1);
+            background: linear-gradient(145deg, #3D4F3D, #2C3E2C);
+            border-color: var(--olive-secondary);
+            box-shadow: 
+                0 5px 20px rgba(85, 107, 47, 0.5),
+                0 0 0 1px rgba(107, 142, 35, 0.3);
+            color: var(--hazard-yellow);
+        }
+        
+        .dock-tooltip {
+            position: absolute; top: -45px; 
+            background: var(--tactical-gray); 
+            color: var(--olive-light);
+            padding: 6px 14px; border-radius: 2px; font-size: 12px; opacity: 0;
+            transition: 0.3s; pointer-events: none; 
+            border: 1px solid var(--olive-secondary);
+            font-family: 'Share Tech Mono', monospace; 
+            white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .dock-item:hover .dock-tooltip { 
+            opacity: 1; 
+            top: -55px; 
+        }
+
+        /* --- TACTICAL MODALS --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 15, 10, 0.92); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center;
+            z-index: 999; opacity: 0; transition: opacity 0.3s;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+
+        .holo-card {
+            width: 900px; max-width: 100%; 
+            max-height: 85vh;
+            overflow-y: auto;
+            background: 
+                linear-gradient(145deg, rgba(28, 40, 28, 0.95), rgba(20, 30, 20, 0.9));
+            border: 1px solid var(--olive-dark);
+            border-radius: 4px; padding: 40px; position: relative;
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(154, 185, 115, 0.1);
+            transform: scale(0.9); transition: transform 0.3s; 
+            color: #D4E6B5;
+            scrollbar-width: thin; 
+            scrollbar-color: var(--olive-secondary) #1A2512;
+        }
+        
+        .holo-card::-webkit-scrollbar { width: 8px; }
+        .holo-card::-webkit-scrollbar-track { background: #1A2512; }
+        .holo-card::-webkit-scrollbar-thumb { 
+            background: var(--olive-secondary); 
+            border-radius: 2px;
+            border: 1px solid var(--olive-dark);
+        }
+
+        .modal-overlay.active .holo-card { transform: scale(1); }
+
+        .close-btn {
+            position: absolute; top: 15px; right: 15px; z-index: 1001;
+            background: rgba(10, 15, 10, 0.8); border-radius: 2px; width: 40px; height: 40px;
+            border: 1px solid var(--olive-secondary); color: var(--olive-light);
+            font-size: 1.2rem; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .close-btn:hover { 
+            transform: rotate(90deg) scale(1.1); 
+            background: var(--olive-secondary); 
+            color: var(--tactical-black);
+            border-color: var(--hazard-yellow);
+        }
+
+        /* --- TACTICAL SKILLS STYLE --- */
+        .skill-category {
+            color: var(--olive-light); 
+            font-weight: bold; 
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(85, 107, 47, 0.5); 
+            padding-bottom: 8px;
+            display: flex; 
+            justify-content: space-between; 
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .progress-rail {
+            height: 12px; 
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark); 
+            border-radius: 2px; 
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .progress-bar {
+            height: 100%; 
+            background: linear-gradient(90deg, var(--olive-secondary), var(--olive-light));
+            width: 0%; 
+            box-shadow: 0 0 10px rgba(107, 142, 35, 0.3);
+            transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .skill-info {
+            display: flex; 
+            justify-content: space-between;
+            margin-bottom: 8px; 
+            font-size: 0.9rem; 
+            color: #9AB973;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        /* --- TACTICAL PROJECT BOX --- */
+        .project-box {
+            background: rgba(20, 30, 20, 0.6); 
+            border: 1px solid var(--olive-dark);
+            padding: 20px; 
+            border-radius: 4px; 
+            height: 100%; 
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .project-box:hover {
+            border-color: var(--olive-secondary); 
+            box-shadow: 0 5px 20px rgba(85, 107, 47, 0.3);
+            transform: translateY(-5px);
+        }
+        .tech-stack { 
+            font-size: 0.8rem; 
+            color: var(--olive-light); 
+            font-family: 'Share Tech Mono'; 
+            letter-spacing: 1px; 
+            margin-top: 10px; 
+            display: block; 
+        }
+
+        /* --- TACTICAL CV VIEW --- */
+        .cv-content h4 { 
+            color: var(--olive-light); 
+            font-family: 'Share Tech Mono'; 
+            margin-top: 20px; 
+            border-bottom: 1px solid var(--olive-dark); 
+            padding-bottom: 8px; 
+            font-size: 1.1rem; 
+            text-transform: uppercase;
+        }
+        .cv-content ul { padding-left: 20px; }
+        .cv-content li { 
+            margin-bottom: 8px; 
+            color: #C4D6A9; 
+            font-size: 0.95rem; 
+            position: relative;
+        }
+        .cv-content li::before {
+            content: '▶';
+            color: var(--olive-secondary);
+            position: absolute;
+            left: -15px;
+            font-size: 0.8rem;
+        }
+        .cv-content p { font-size: 0.95rem; color: #D4E6B5; }
+        
+        /* --- TACTICAL FORM STYLING --- */
+        .cyber-input {
+            background: rgba(20, 30, 20, 0.8); 
+            border: 1px solid var(--olive-dark); 
+            color: var(--olive-light);
+            padding: 12px; width: 100%; margin-bottom: 12px;
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 1rem; 
+            border-radius: 2px; 
+            transition: 0.3s;
+        }
+        .cyber-input:focus {
+            outline: none; 
+            border-color: var(--olive-secondary);
+            box-shadow: 0 0 15px rgba(85, 107, 47, 0.3); 
+            background: rgba(10, 15, 10, 0.9);
+        }
+        .btn-cyber {
+            width: 100%; 
+            background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
+            color: var(--tactical-black); 
+            border: 1px solid var(--olive-secondary);
+            padding: 12px; font-size: 1rem;
+            font-weight: 800; 
+            font-family: 'Share Tech Mono'; 
+            letter-spacing: 2px;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+            cursor: pointer; 
+            transition: 0.3s; 
+            text-transform: uppercase; 
+            text-decoration: none; 
+            display: inline-block; 
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-cyber:hover::before {
+            left: 100%;
+        }
+        .btn-cyber:hover { 
+            background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
+            box-shadow: 0 5px 20px rgba(85, 107, 47, 0.5); 
+            letter-spacing: 3px; 
+            color: var(--tactical-black);
+            border-color: var(--hazard-yellow);
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* --- TACTICAL BADGES --- */
+        .badge {
+            background: rgba(85, 107, 47, 0.2) !important;
+            border: 1px solid var(--olive-secondary) !important;
+            color: var(--olive-light) !important;
+            border-radius: 2px !important;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* --- HEADER STYLES IN MODALS --- */
+        h2.text-info {
+            color: var(--olive-light) !important;
+            font-family: 'Share Tech Mono', monospace !important;
+            border-bottom: 1px solid var(--olive-dark);
+            padding-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+        }
+
+        h2.text-info::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: var(--olive-secondary);
+        }
+
+        /* =========================================
+           MOBILE OPTIMIZATION (PORTRAIT FIXES)
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Adjust Status Bar */
+            .system-status {
+                top: 15px; right: 15px; font-size: 0.7rem; 
+                padding-right: 10px; border-right-width: 2px;
+                padding: 6px 10px;
+            }
+            
+            /* Profile Adjustments */
+            .profile-card {
+                padding: 20px;
+                margin: 0 15px;
+            }
+            
+            .avatar-glow { width: 140px; height: 140px; }
+            h1 { font-size: 2rem; letter-spacing: 2px; line-height: 1.2; margin-bottom: 10px; }
+            .role-badge { font-size: 0.8rem; padding: 6px 20px; }
+            
+            .typing-wrapper {
+                font-size: 1rem; flex-direction: column; gap: 5px;
+                text-align: center; margin-top: 1rem;
+            }
+            .typing-wrapper i { display: none; }
+
+            /* Dock Optimization */
+            .dock-container {
+                padding: 10px 20px; gap: 15px; bottom: 20px;
+                width: 90%; justify-content: space-around;
+            }
+            .dock-item { width: 50px; height: 50px; font-size: 1.3rem; }
+            .dock-item:hover { transform: none; }
+
+            /* Modal / Popup Optimization */
+            .holo-card {
+                padding: 25px 20px !important;
+                max-height: 80vh;
+                margin-bottom: 60px;
+            }
+            
+            #modal-contact .holo-card { padding: 30px 20px; }
+
+            .close-btn { top: 10px; right: 10px; width: 35px; height: 35px; font-size: 1rem; }
+
+            /* Text Adjustments inside Modals */
+            h2 { font-size: 1.5rem !important; }
+            p.fs-5 { font-size: 1rem !important; line-height: 1.6; }
+            
+            /* Skills Layout */
+            .skill-category { font-size: 0.9rem; margin-top: 20px; }
+            .skill-info { font-size: 0.8rem; }
+
+            /* Project Box */
+            .project-box { margin-bottom: 10px; }
+        }
+
+        /* --- MILITARY GRID BACKGROUND --- */
+        .military-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(85, 107, 47, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(85, 107, 47, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="particles-js"></div>
+    <div class="military-grid"></div>
+
+    <div class="system-status">
+        <div id="clock">00:00:00</div>
+        <div style="font-size: 0.7rem; color: var(--olive-light);">LOC: BEKASI <span class="blink">■</span> TACTICAL ONLINE</div>
+    </div>
+
+    <div class="profile-card">
+        <img src="https://media.licdn.com/dms/image/v2/D4D03AQGIpbdyUtEJfA/profile-displayphoto-shrink_200_200/B4DZouDxs1GwAY-/0/1761709333635?e=1768435200&v=beta&t=XEIg89vHc_Qvug0iEAAPH8R75xMmR_LJQIWXIVqfsiw" 
+             alt="Donny Nugroho" class="avatar-glow">
+        <h1>Donny Nugroho</h1>
+        <div class="role-badge">EDUCATION TACTICAL OFFICER</div>
+        
+        <div class="typing-wrapper">
+            <i class="fas fa-quote-left" style="color: var(--olive-light);"></i>
+            <span id="text-rotator">Empowering Education through Digital Innovation.</span>
+            <i class="fas fa-quote-right" style="color: var(--olive-light);"></i>
+        </div>
+    </div>
+
+    <div class="dock-container">
+        <div class="dock-item" onclick="openModal('about')"><i class="fas fa-user-secret"></i><span class="dock-tooltip">Tactical Identity</span></div>
+        <div class="dock-item" onclick="openModal('projects')"><i class="fas fa-cogs"></i><span class="dock-tooltip">Operations Database</span></div>
+        <div class="dock-item" onclick="openModal('skills')"><i class="fas fa-crosshairs"></i><span class="dock-tooltip">Capabilities</span></div>
+        <div class="dock-item" style="background: linear-gradient(145deg, rgba(85, 107, 47, 0.5), rgba(74, 90, 35, 0.3)); border-color: var(--olive-secondary); color: var(--hazard-yellow);" onclick="openModal('contact')">
+            <i class="fas fa-satellite-dish"></i><span class="dock-tooltip">Establish Comms</span>
+        </div>
+    </div>
+
+    <!-- Modal About -->
+    <div class="modal-overlay" id="modal-about">
+        <div class="holo-card">
+            <button class="close-btn" onclick="closeModal('about')"><i class="fas fa-times"></i></button>
+            <h2 class="text-info fw-bold mb-4">OPERATIONS BRIEFING</h2>
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <p class="fs-5 lh-lg">Tactical Officer <strong style="color: var(--olive-light);">Donny</strong>. Mission objective: Bridge the gap between pedagogical strategies and modern technological warfare.<br><br>
+                    Specializing in digital transformation ops for educational institutions, from administrative command systems to AI-enhanced learning protocols.</p>
+                    
+                    <div class="d-flex gap-2 flex-wrap mb-4">
+                        <span class="badge bg-transparent border p-2">Google Warfare Expertise</span>
+                        <span class="badge bg-transparent border p-2">AI Tactical Teaching</span>
+                        <span class="badge bg-transparent border p-2">Digital Enablement Ops</span>
+                        <span class="badge bg-transparent border p-2">Strategic Learning Systems</span>
+                    </div>
+                    
+                    <button onclick="openModal('cv')" class="btn-cyber" style="width: auto; font-size: 0.9rem;">
+                        <i class="fas fa-file-contract me-2"></i> VIEW FULL DOSSIER
+                    </button>
+                </div>
+                <div class="col-md-4 text-center d-none d-md-block">
+                    <i class="fas fa-helmet-battle fa-6x" style="color: var(--olive-dark); opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal CV (Sisa konten CV tetap sama) -->
+    <div class="modal-overlay" id="modal-cv">
+        <div class="holo-card">
+            <button class="close-btn" onclick="closeModal('cv')"><i class="fas fa-times"></i></button>
+            <div class="cv-content">
+                <div class="text-center mb-5">
+                    <h2 style="font-family: 'Share Tech Mono'; color: var(--olive-light);">TACTICAL DOSSIER</h2>
+                    <h3 class="text-white">Donny Nugroho, S.Sos.</h3>
+                    <small class="text-secondary">Professional Educator | Digital Learning Facilitator | Content Creator</small>
+                </div>
+
+                <h4>PROFILE SUMMARY</h4>
+                <p>An experienced and dedicated educator with a strong background in teaching across diverse educational environments, including Public Schools, Integrated Islamic Schools, National Plus Schools, and International Schools. Proven expertise in digital learning, instructional technology, and teacher professional development. Actively contributes to educational innovation through facilitation, national-level training, leadership in professional teacher organizations, and creative digital content development.</p>
+
+                <h4>PROFESSIONAL EXPERIENCE</h4>
+                <p><strong>Teacher (Secondary Education)</strong><br><em>Public School, Integrated Islamic School, National Plus School, and International School</em></p>
+                <ul>
+                    <li>Delivered student-centered and inquiry-based learning aligned with national and international curricula.</li>
+                    <li>Integrated digital tools, educational games, and AI-assisted learning to enhance student engagement and learning outcomes.</li>
+                    <li>Adapted teaching strategies to multicultural, multilingual, and diverse academic environments.</li>
+                    <li>Designed assessment instruments emphasizing Higher Order Thinking Skills (HOTS).</li>
+                </ul>
+                <p><strong>Virtual Coordinator Trainer / Facilitator</strong></p>
+                <ul>
+                    <li>Facilitated online and hybrid training programs for teachers and education professionals.</li>
+                    <li>Coordinated virtual learning environments using digital platforms and collaborative tools.</li>
+                    <li>Supported educators in implementing digital empowerment strategies in teaching and learning.</li>
+                </ul>
+                <p><strong>National Instructor</strong></p>
+                <ul>
+                    <li>Served as a national-level instructor in professional development programs for teachers.</li>
+                    <li>Delivered training on pedagogy, digital integration, curriculum implementation, and assessment strategies.</li>
+                    <li>Mentored educators to improve instructional quality and digital competency.</li>
+                </ul>
+                <p><strong>Head of MGMP (Subject Teachers Association)</strong></p>
+                <ul>
+                    <li>Led professional learning communities at the regional level.</li>
+                    <li>Coordinated curriculum alignment, lesson study, and best practice sharing among teachers.</li>
+                    <li>Promoted collaborative learning culture and continuous professional improvement.</li>
+                </ul>
+                <p><strong>Content Creator & Blogger</strong></p>
+                <ul>
+                    <li>Produced educational content focused on teaching strategies, digital learning, and social sciences.</li>
+                    <li>Managed and maintained educational blogs and online platforms.</li>
+                </ul>
+
+                <h4>EDUCATION</h4>
+                <p><strong>Bachelor's Degree in Sociology (S.Sos.)</strong></p>
+
+                <h4>CORE SKILLS</h4>
+                <p>Teaching & Learning Innovation | Digital Empowerment in Education | AI-Enhanced Teaching | Game-Based Learning | Technology Instruction | Google Workspace Expertise | Curriculum Development</p>
+                
+                <h4>LANGUAGES</h4>
+                <p>Indonesian (Native) | English (Professional Proficiency)</p>
+            </div>
+            <div class="mt-4 text-center">
+                <button onclick="closeModal('cv'); openModal('about')" class="btn-cyber" style="width: auto; font-size: 0.9rem;">BACK TO BRIEFING</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Projects -->
+    <div class="modal-overlay" id="modal-projects">
+        <div class="holo-card">
+            <button class="close-btn" onclick="closeModal('projects')"><i class="fas fa-times"></i></button>
+            
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <h2 class="text-info fw-bold m-0">OPERATIONS DATABASE</h2>
+                <button onclick="downloadCatalog()" class="btn-cyber" style="width: auto; font-size: 0.8rem;">
+                    <i class="fas fa-file-pdf me-1"></i> DOWNLOAD CATALOG
+                </button>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="project-box">
+                        <h5 class="text-white fw-bold">CBT Online System</h5>
+                        <p class="small text-secondary mb-2">Secure computer-based examination system with timer and basic anti-cheat features.</p>
+                        <span class="tech-stack"><i class="fas fa-code me-1"></i> Google Forms, Custom Script</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="project-box">
+                        <h5 class="text-white fw-bold">Educational Game Ops</h5>
+                        <p class="small text-secondary mb-2">Interactive gamified learning media to boost student engagement and motivation.</p>
+                        <span class="tech-stack"><i class="fas fa-gamepad me-1"></i> HTML5 Canvas, JS Logic</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="project-box">
+                        <h5 class="text-white fw-bold">SPMB Online</h5>
+                        <p class="small text-secondary mb-2">Digital New Student Admission portal with integrated WhatsApp Notification system.</p>
+                        <span class="tech-stack"><i class="fab fa-whatsapp me-1"></i> Apps Script, Sheets DB</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="project-box">
+                        <h5 class="text-white fw-bold">Auto-Cert Generator</h5>
+                        <p class="small text-secondary mb-2">Automatic certificate distribution for webinars and educational workshops.</p>
+                        <span class="tech-stack"><i class="fas fa-file-powerpoint me-1"></i> Google Slides API, Mail Merge</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Skills -->
+    <div class="modal-overlay" id="modal-skills">
+        <div class="holo-card" style="max-width: 800px;">
+            <button class="close-btn" onclick="closeModal('skills')"><i class="fas fa-times"></i></button>
+            <h2 class="text-info fw-bold mb-4">SYSTEM CAPABILITIES</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6 pe-md-4">
+                    <div class="skill-category"><span>TECHNICAL PROTOCOLS</span> <i class="fas fa-code"></i></div>
+                    
+                    <div class="mb-3">
+                        <div class="skill-info"><span><i class="fab fa-html5 me-2"></i> HTML5 & CSS3</span> <span>95%</span></div>
+                        <div class="progress-rail"><div class="progress-bar" data-width="95%"></div></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="skill-info"><span><i class="fas fa-gamepad me-2"></i> Gamification Logic (JS)</span> <span>85%</span></div>
+                        <div class="progress-rail"><div class="progress-bar" data-width="85%"></div></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="skill-info"><span><i class="fab fa-google me-2"></i> Google Apps Script</span> <span>90%</span></div>
+                        <div class="progress-rail"><div class="progress-bar" data-width="90%"></div></div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 ps-md-4">
+                    <div class="skill-category"><span>EDTECH MODULES</span> <i class="fas fa-robot"></i></div>
+                    
+                    <div class="mb-3">
+                        <div class="skill-info"><span><i class="fas fa-brain me-2"></i> AI for Education</span> <span>95%</span></div>
+                        <div class="progress-rail"><div class="progress-bar" data-width="95%"></div></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="skill-info"><span><i class="fas fa-network-wired me-2"></i> LMS Management</span> <span>80%</span></div>
+                        <div class="progress-rail"><div class="progress-bar" data-width="80%"></div></div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="skill-info"><span><i class="fas fa-tasks me-2"></i> Digital Assessment</span> <span>88%</span></div>
+                        <div class="progress-rail"><div class="progress-bar" data-width="88%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-3 border border-secondary" style="background: rgba(20, 30, 20, 0.8); color: var(--olive-light); text-align: center; font-family: 'Share Tech Mono'; font-size: 0.9rem;">
+                SYSTEM STATUS<br>
+                <span class="text-white small">EDUCATION MODULES LOADED. READY TO DEPLOY. <span class="blink">■</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Contact -->
+    <div class="modal-overlay" id="modal-contact">
+        <div class="holo-card">
+            <button class="close-btn" onclick="closeModal('contact')"><i class="fas fa-times"></i></button>
+            <h2 class="text-center mb-4 text-info">ESTABLISH COMMUNICATIONS</h2>
+            
+            <form name="submit-to-google-sheet" id="commandForm">
+                <input type="text" class="cyber-input" name="nama" id="form-nama" placeholder="IDENTIFICATION (NAME)" required>
+                <input type="email" class="cyber-input" name="email" id="form-email" placeholder="EMAIL" required>
+                <input type="tel" class="cyber-input" name="wa" placeholder="COMM CHANNEL (WHATSAPP)" required>
+                <textarea rows="3" class="cyber-input" name="pesan" placeholder="TRANSMISSION MESSAGE..."></textarea>
+                
+                <button type="submit" class="btn-cyber mt-2">
+                    <i class="fas fa-satellite me-2"></i> INITIATE CONTACT
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <script>
+        // 1. PARTICLES - Military theme
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {"value": 40, "density": {"enable": true, "value_area": 800}},
+                "color": {"value": "#556B2F"},
+                "shape": {"type": "circle"},
+                "opacity": {"value": 0.3, "random": true},
+                "size": {"value": 3, "random": true},
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#6B8E23",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {"enable": true, "speed": 1}
+            }
+        });
+
+        // 2. LIVE CLOCK
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+            document.getElementById('clock').innerText = "SYS.TIME: " + timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 3. TEXT ROTATOR
+        const textArray = [
+            "Empowering Education through Digital Innovation.",
+            "Transforming Classrooms with Tactical AI.",
+            "Designing Strategic Learning Systems",
+            "Integrating Technology with Pedagogy",
+            "Developing Learning Media & Tools",
+            "Training & Coaching Educators",
+            "Evaluating Learning Technology",
+            "Managing Educational Technology Operations",
+            "Supporting Inclusive & Accessible Learning",
+            "Data-Informed Decision Making"
+        ];
+        
+        let textIndex = 0;
+        const textElement = document.getElementById("text-rotator");
+
+        setInterval(() => {
+            textElement.classList.add("fade-out");
+            setTimeout(() => {
+                textIndex = (textIndex + 1) % textArray.length;
+                textElement.innerText = textArray[textIndex];
+                textElement.classList.remove("fade-out");
+            }, 500);
+        }, 4000);
+
+        // 4. MODAL LOGIC
+        function openModal(id) {
+            document.querySelectorAll('.modal-overlay').forEach(el => el.classList.remove('active'));
+            if(id === 'skills') document.querySelectorAll('.progress-bar').forEach(b => b.style.width = '0%');
+            document.getElementById('modal-' + id).classList.add('active');
+            if(id === 'skills') {
+                setTimeout(() => {
+                    document.querySelectorAll('.progress-bar').forEach(b => b.style.width = b.getAttribute('data-width'));
+                }, 300);
+            }
+        }
+        function closeModal(id) { document.getElementById('modal-' + id).classList.remove('active'); }
+        document.querySelectorAll('.modal-overlay').forEach(o => {
+            o.addEventListener('click', function(e) { if(e.target===this) this.classList.remove('active'); });
+        });
+
+        // 5. GOOGLE SHEETS + QR CODE + CATALOG LOGIC
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbxjO_gkE4X9N5zLqY-_eQqVLP0sFUSsA_L1Mw_Lwl6m-0x4VSrZjOLhG8do_zDIfHOwiA/exec';
+        const form = document.forms['submit-to-google-sheet'];
+        const btn = document.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'ESTABLISHING COMMS... <i class="fas fa-satellite fa-spin"></i>';
+            btn.disabled = true;
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    btn.innerHTML = originalText; btn.disabled = false;
+                    closeModal('contact'); 
+                    
+                    // Generate Unique Code
+                    const now = new Date();
+                    const timestamp = now.getFullYear() +
+                        String(now.getMonth() + 1).padStart(2, '0') +
+                        String(now.getDate()).padStart(2, '0') +
+                        String(now.getHours()).padStart(2, '0') +
+                        String(now.getMinutes()).padStart(2, '0') +
+                        String(now.getSeconds()).padStart(2, '0');
+                    const uniqueCode = "DN" + timestamp;
+
+                    // Get Form Data
+                    const nama = document.getElementById('form-nama').value;
+                    const email = document.getElementById('form-email').value;
+                    
+                    // Generate QR Data URL using QRServer API
+                    const qrData = `Nama: ${nama}\nEmail: ${email}\nKode Unik: ${uniqueCode}`;
+                    const qrImgUrl = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" + encodeURIComponent(qrData);
+
+                    form.reset();
+
+                    // Show SweetAlert with military theme
+                    Swal.fire({
+                        background: '#0A0F0A',
+                        color: '#D4E6B5',
+                        title: 'TRANSMISSION SUCCESSFUL',
+                        html: `
+                            <p style="font-family: 'Share Tech Mono';">Data secured. Access Code: <strong style="color:#6B8E23;">${uniqueCode}</strong></p>
+                            <div style="display:flex; justify-content:center; margin:15px 0;">
+                                <img src="${qrImgUrl}" alt="QR Code" style="border: 2px solid #6B8E23; padding: 5px; background:white;">
+                            </div>
+                            <p style="font-size:0.9rem; color:#9AB973;">Secure QR code for mission verification.</p>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonColor: '#6B8E23',
+                        cancelButtonColor: '#555',
+                        confirmButtonText: '<i class="fas fa-file-pdf"></i> Download Operations Catalog',
+                        cancelButtonText: 'Close Transmission',
+                        customClass: {
+                            popup: 'military-swal'
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            downloadCatalog();
+                        }
+                    });
+                })
+                .catch(error => {
+                    btn.innerHTML = originalText; btn.disabled = false;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'TRANSMISSION FAILED',
+                        text: 'Check comms connection.',
+                        background: '#0A0F0A',
+                        color: '#D4E6B5'
+                    });
+                });
+        });
+
+        // 6. PDF CATALOG GENERATOR (Military themed)
+        function downloadCatalog() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const margin = 20;
+            let y = 20;
+
+            // Set military colors
+            const oliveColor = [85, 107, 47];
+            const darkColor = [10, 15, 10];
+
+            const addTitle = (txt) => {
+                doc.setFontSize(16); 
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(...oliveColor);
+                doc.text(txt, margin, y); 
+                y += 8;
+            };
+            
+            const addSubtitle = (txt) => {
+                doc.setFontSize(14); 
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(...oliveColor);
+                doc.text(txt, margin, y); 
+                y += 7;
+            };
+            
+            const addHeader = (txt) => {
+                doc.setFontSize(12); 
+                doc.setFont("helvetica", "bold");
+                doc.setTextColor(...oliveColor);
+                doc.text(txt, margin, y); 
+                y += 6;
+            };
+            
+            const addBody = (txt) => {
+                doc.setFontSize(10); 
+                doc.setFont("helvetica", "normal");
+                doc.setTextColor(0, 0, 0);
+                const splitText = doc.splitTextToSize(txt, pageWidth - margin * 2);
+                doc.text(splitText, margin, y);
+                y += splitText.length * 5;
+            };
+            
+            const checkPage = (h) => {
+                if (y + h > 280) { 
+                    doc.addPage(); 
+                    y = 20; 
+                }
+            };
+
+            // HEADER with military style
+            doc.setFillColor(...darkColor);
+            doc.rect(0, 0, pageWidth, 40, 'F');
+            
+            doc.setFontSize(18); 
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(255, 255, 255);
+            doc.text("EDUCATION TACTICAL OPERATIONS", pageWidth/2, 15, {align:'center'});
+            
+            doc.setFontSize(12); 
+            doc.text("Service Catalog & Mission Briefing", pageWidth/2, 25, {align:'center'});
+            
+            y = 45;
+            doc.setFontSize(10); 
+            doc.setTextColor(...oliveColor);
+            doc.text("Operations Officer: Donny Nugroho", margin, y); y+=5;
+            doc.text("Role: Education Tactical Officer | Digital Learning Facilitator", margin, y); y+=10;
+
+            doc.setDrawColor(...oliveColor);
+            doc.setLineWidth(0.5); 
+            doc.line(margin, y, pageWidth-margin, y); 
+            y+=10;
+
+            // A. TEACHER & SCHOOL DEVELOPMENT
+            checkPage(40);
+            addSubtitle("A. TEACHER & SCHOOL DEVELOPMENT OPERATIONS");
+            
+            addHeader("1. AI-Enhanced Teaching Training");
+            addBody("Description: Hands-on training for teachers on using AI tools to support lesson planning, assessment, and differentiated instruction.\nDeliverables:\n- Training module & materials\n- Practical AI use cases for classrooms\n- Certificate of participation\nPrice: IDR 3,500,000 / session (2-3 hours)");
+            y+=5;
+
+            checkPage(40);
+            addHeader("2. Digital Pedagogy & Learning Design Workshop");
+            addBody("Description: Workshop on integrating pedagogy, curriculum, and digital tools to improve learning outcomes.\nDeliverables:\n- Digital lesson design framework\n- Sample lesson plans (HOTS-oriented)\n- Workshop documentation\nPrice: IDR 4,000,000 / session (half-day)");
+            y+=5;
+
+            checkPage(40);
+            addHeader("3. Game-Based Learning Development");
+            addBody("Description: Design and implementation of educational games aligned with learning objectives.\nDeliverables:\n- Educational game concept\n- Digital or interactive learning activity\n- Teacher guide\nPrice: IDR 2,500,000 - 5,000,000 / project");
+            y+=10;
+
+            // B. DIGITAL LEARNING
+            checkPage(40);
+            addSubtitle("B. DIGITAL LEARNING & TECHNOLOGY OPERATIONS");
+            
+            addHeader("4. Google Workspace for Education Training");
+            addBody("Description: Training on effective use of Google Docs, Slides, Forms, Classroom, and collaborative workflows.\nDeliverables:\n- Practical training sessions\n- Classroom-ready templates\n- Implementation guide\nPrice: IDR 3,000,000 / session");
+            y+=5;
+
+            checkPage(40);
+            addHeader("5. Learning Management System (LMS) Setup & Mentoring");
+            addBody("Description: Support for setting up and optimizing LMS or virtual learning environments.\nDeliverables:\n- LMS structure design\n- Content organization support\n- Teacher mentoring\nPrice: IDR 5,000,000 - 8,000,000 / project");
+            y+=10;
+
+            // C. FACILITATION
+            checkPage(40);
+            addSubtitle("C. FACILITATION & PROFESSIONAL LEADERSHIP");
+            
+            addHeader("6. Virtual Coordinator Trainer / Facilitator");
+            addBody("Description: Facilitation of online or hybrid training programs at school, district, or organizational level.\nDeliverables:\n- Program coordination\n- Online facilitation\n- Learning evaluation summary\nPrice: IDR 2,500,000 / session");
+            y+=5;
+
+            checkPage(40);
+            addHeader("7. Curriculum & Assessment Consultation");
+            addBody("Description: Consultation on curriculum design, HOTS-based assessment, and learning evaluation.\nDeliverables:\n- Curriculum review\n- Assessment instruments\n- Written recommendations\nPrice: IDR 3,500,000 / consultation package");
+            y+=10;
+
+            // D. CONTENT
+            checkPage(40);
+            addSubtitle("D. CONTENT CREATION & DIGITAL SERVICES");
+            
+            addHeader("8. Educational Content Creation");
+            addBody("Description: Development of written, visual, or multimedia educational content.\nDeliverables:\n- Articles / learning materials\n- Visual or digital assets\nPrice: IDR 500,000 - 1,500,000 / content");
+            y+=5;
+
+            checkPage(40);
+            addHeader("9. Educational Website Design (Freelance)");
+            addBody("Description: Design and development of educational or personal branding websites.\nDeliverables:\n- Website design & setup\n- Content structure & layout\nPrice: IDR 3,000,000 - 7,000,000 / website");
+            y+=10;
+
+            // NOTES
+            checkPage(40);
+            doc.setFontSize(10); 
+            doc.setFont("helvetica", "italic");
+            doc.setTextColor(...oliveColor);
+            doc.text("Mission Notes:", margin, y); y+=5;
+            doc.setTextColor(0, 0, 0);
+            addBody("- Prices are negotiable depending on scope, duration, and location.\n- Special rates available for schools, MGMP, and non-profit educational institutions.\n- Travel and accommodation costs (if any) are excluded.\nContact: Available upon request");
+
+            doc.save("EdTech_Tactical_Operations_Catalog.pdf");
+        }
+    </script>
+</body>
+</html>
