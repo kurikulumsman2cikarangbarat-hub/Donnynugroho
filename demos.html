@@ -25,13 +25,13 @@
             color: #D4E6B5;
             font-family: 'Rajdhani', sans-serif;
             min-height: 100vh;
-            padding-top: 60px;
+            padding-top: 80px;
         }
 
         .tactical-header {
             background: rgba(10, 15, 10, 0.95);
             border-bottom: 1px solid var(--olive-dark);
-            padding: 15px 0;
+            padding: 20px 0;
             position: fixed;
             top: 0;
             width: 100%;
@@ -43,12 +43,15 @@
             background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
             color: var(--tactical-black);
             border: 1px solid var(--olive-secondary);
-            padding: 8px 20px;
+            padding: 10px 25px;
             font-family: 'Share Tech Mono', monospace;
             text-decoration: none;
-            border-radius: 2px;
+            border-radius: 4px;
             transition: 0.3s;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .back-btn:hover {
@@ -56,86 +59,117 @@
             color: var(--tactical-black);
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(85, 107, 47, 0.5);
+            text-decoration: none;
         }
 
         .demo-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 30px 20px;
         }
 
         .section-title {
             font-family: 'Share Tech Mono', monospace;
             color: var(--olive-light);
-            border-bottom: 1px solid var(--olive-dark);
-            padding-bottom: 10px;
-            margin-top: 30px;
+            border-bottom: 2px solid var(--olive-dark);
+            padding-bottom: 12px;
+            margin-top: 40px;
+            margin-bottom: 25px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: var(--olive-secondary);
         }
 
         .demo-card {
             background: rgba(20, 30, 20, 0.8);
             border: 1px solid var(--olive-dark);
-            border-radius: 4px;
-            padding: 25px;
-            margin-bottom: 25px;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
             transition: all 0.3s ease;
             height: 100%;
+            position: relative;
+            overflow: hidden;
         }
 
         .demo-card:hover {
             border-color: var(--olive-secondary);
-            box-shadow: 0 5px 25px rgba(85, 107, 47, 0.5);
-            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(85, 107, 47, 0.5);
+            transform: translateY(-8px);
         }
 
         .demo-badge {
             background: rgba(85, 107, 47, 0.3);
             border: 1px solid var(--olive-secondary);
             color: var(--hazard-yellow);
-            padding: 3px 10px;
-            border-radius: 2px;
+            padding: 6px 15px;
+            border-radius: 4px;
             font-size: 0.8rem;
             font-family: 'Share Tech Mono', monospace;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .demo-screenshot {
             width: 100%;
-            height: 200px;
+            height: 220px;
             background: var(--tactical-gray);
             border: 1px solid var(--olive-dark);
-            border-radius: 4px;
-            margin-bottom: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--olive-light);
+            position: relative;
+        }
+
+        .demo-screenshot::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--olive-secondary), transparent);
         }
 
         .demo-features {
             list-style: none;
             padding-left: 0;
-            margin-top: 15px;
+            margin-top: 20px;
+            margin-bottom: 25px;
         }
 
         .demo-features li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: #9AB973;
             font-size: 0.9rem;
             position: relative;
-            padding-left: 20px;
+            padding-left: 25px;
+            line-height: 1.5;
         }
 
         .demo-features li:before {
-            content: '▶';
+            content: '▸';
             color: var(--olive-secondary);
             position: absolute;
             left: 0;
-            font-size: 0.8rem;
+            font-size: 1rem;
+            font-weight: bold;
         }
 
         .access-btn {
@@ -144,23 +178,42 @@
             background: linear-gradient(135deg, var(--olive-secondary), var(--olive-dark));
             color: var(--tactical-black);
             border: 1px solid var(--olive-secondary);
-            padding: 12px;
+            padding: 14px;
             text-align: center;
             text-decoration: none;
             font-family: 'Share Tech Mono', monospace;
             font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            border-radius: 2px;
-            margin-top: 15px;
-            transition: 0.3s;
+            letter-spacing: 1.5px;
+            border-radius: 4px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .access-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s;
         }
 
         .access-btn:hover {
             background: linear-gradient(135deg, var(--olive-light), var(--olive-secondary));
             color: var(--tactical-black);
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(85, 107, 47, 0.5);
+        }
+
+        .access-btn:hover::before {
+            left: 100%;
         }
 
         .tech-tag {
@@ -168,12 +221,13 @@
             background: rgba(85, 107, 47, 0.2);
             border: 1px solid var(--olive-secondary);
             color: var(--olive-light);
-            padding: 3px 8px;
-            border-radius: 2px;
+            padding: 4px 10px;
+            border-radius: 3px;
             font-size: 0.75rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
+            margin-right: 8px;
+            margin-bottom: 8px;
             font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
         }
 
         .military-grid {
@@ -193,11 +247,12 @@
         .demo-status {
             background: rgba(20, 30, 20, 0.9);
             border: 1px solid var(--olive-dark);
-            border-radius: 4px;
-            padding: 15px;
-            margin-top: 30px;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 50px;
             font-family: 'Share Tech Mono', monospace;
             font-size: 0.9rem;
+            border-left: 4px solid var(--olive-secondary);
         }
 
         .blink {
@@ -209,18 +264,120 @@
             50% { opacity: 0.3; }
         }
 
+        .intro-text {
+            font-size: 1.1rem;
+            color: var(--olive-light);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            background: rgba(20, 30, 20, 0.6);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 4px solid var(--hazard-yellow);
+        }
+
+        .instructions-grid {
+            background: rgba(20, 30, 20, 0.8);
+            border: 1px solid var(--olive-dark);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 50px;
+        }
+
+        .instruction-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(10, 15, 10, 0.9);
+            border: 1px solid var(--olive-dark);
+            border-radius: 6px;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-item:hover {
+            border-color: var(--olive-secondary);
+            transform: translateY(-5px);
+        }
+
+        .instruction-icon {
+            font-size: 2.5rem;
+            color: var(--olive-light);
+            margin-bottom: 15px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         @media (max-width: 768px) {
+            body {
+                padding-top: 70px;
+            }
+            
             .demo-container {
-                padding: 15px;
+                padding: 20px 15px;
             }
             
             .demo-card {
-                padding: 20px;
+                padding: 25px 20px;
+                margin-bottom: 25px;
             }
             
             .tactical-header {
-                padding: 10px 0;
+                padding: 15px 0;
             }
+            
+            .section-title {
+                font-size: 1.3rem;
+                margin-top: 30px;
+                margin-bottom: 20px;
+            }
+            
+            .demo-screenshot {
+                height: 180px;
+            }
+            
+            .intro-text {
+                font-size: 1rem;
+                padding: 20px;
+            }
+            
+            .access-btn {
+                padding: 12px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .demo-screenshot {
+                height: 150px;
+            }
+            
+            .instruction-item {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .instruction-icon {
+                font-size: 2rem;
+                height: 50px;
+            }
+        }
+
+        /* Animation for cards */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .demo-card {
+            animation: fadeInUp 0.6s ease;
         }
     </style>
 </head>
@@ -246,209 +403,213 @@
     </header>
 
     <div class="demo-container">
-        <div class="row mb-4">
-            <div class="col-12">
-                <p class="fs-5" style="color: var(--olive-light);">
-                    <i class="fas fa-terminal me-2"></i>
-                    Live demonstrations of deployed educational technology systems. Test functional prototypes and interactive learning tools.
-                </p>
-            </div>
+        <!-- Introduction -->
+        <div class="intro-text">
+            <i class="fas fa-terminal me-2"></i>
+            Live demonstrations of deployed educational technology systems. Test functional prototypes and interactive learning tools designed for modern education.
         </div>
 
+        <!-- CORE OPERATIONS DEMOS -->
         <h2 class="section-title">CORE OPERATIONS DEMOS</h2>
         
-        <!-- Di dalam section CORE OPERATIONS DEMOS -->
-<div class="col-lg-6 mb-4">
-    <div class="demo-card">
-        <span class="demo-badge">FULL DEMO</span>
-        <h3 class="h4 text-white">CBT Online System</h3>
-        <p class="text-secondary">Computer Based Test dengan timer, anti-cheat, dan sistem penilaian otomatis.</p>
-        
-        <div class="demo-screenshot">
-            <i class="fas fa-clipboard-check fa-4x"></i>
-        </div>
-        
-        <div class="mb-3">
-            <span class="tech-tag">HTML5</span>
-            <span class="tech-tag">CSS3</span>
-            <span class="tech-tag">JavaScript</span>
-            <span class="tech-tag">Timer System</span>
-            <span class="tech-tag">Anti-Cheat</span>
-            <span class="tech-tag">Auto-Scoring</span>
-        </div>
-        
-        <ul class="demo-features">
-            <li>Login system dengan credentials demo</li>
-            <li>Timer countdown dengan peringatan</li>
-            <li>Sistem anti-cheat detection</li>
-            <li>10 pertanyaan multiple choice</li>
-            <li>Penilaian otomatis dengan breakdown</li>
-            <li>Mark/review questions feature</li>
-            <li>Keyboard shortcuts support</li>
-        </ul>
-        
-        <!-- PERUBAHAN DI SINI: ganti href -->
-        <a href="cbt-online.html" target="_blank" class="access-btn">
-            <i class="fas fa-external-link-alt me-2"></i>LAUNCH CBT DEMO
-        </a>
-    </div>
-</div>
-            <!-- Demo 2: Educational Game -->
-<!-- Tambahkan section baru untuk EDUCATIONAL GAMES -->
-<h2 class="section-title mt-5">EDUCATIONAL GAMES</h2>
-
-<div class="row">
-    <div class="col-lg-6 mb-4">
-        <div class="demo-card">
-            <span class="demo-badge">EDUCATIONAL GAME</span>
-            <h3 class="h4 text-white">Tactical Quiz Challenge</h3>
-            <p class="text-secondary">Game quiz tentang teknologi pendidikan dengan tema military operations.</p>
-            
-            <div class="demo-screenshot">
-                <i class="fas fa-brain fa-4x"></i>
-            </div>
-            
-            <div class="mb-3">
-                <span class="tech-tag">JavaScript</span>
-                <span class="tech-tag">Quiz Game</span>
-                <span class="tech-tag">EdTech</span>
-                <span class="tech-tag">Interactive</span>
-                <span class="tech-tag">Scoring System</span>
-            </div>
-            
-            <ul class="demo-features">
-                <li>10 pertanyaan tentang teknologi pendidikan</li>
-                <li>Sistem ranking berdasarkan score</li>
-                <li>Statistik real-time</li>
-                <li>Kontrol keyboard support</li>
-                <li>Tema military yang konsisten</li>
-            </ul>
-            
-            <!-- PERUBAHAN DI SINI: ganti href -->
-            <a href="tactical-quiz.html" target="_blank" class="access-btn">
-                <i class="fas fa-play me-2"></i>PLAY QUIZ GAME
-            </a>
-        </div>
-    </div>
-</div>
-        <h2 class="section-title">ADMINISTRATIVE SYSTEMS</h2>
-        
         <div class="row">
-            <!-- Demo 3: SPMB Online Portal -->
+            <!-- CBT Online System -->
             <div class="col-lg-6 mb-4">
                 <div class="demo-card">
-                    <span class="demo-badge">PROTOTYPE DEMO</span>
-                    <h3 class="h4 text-white">SPMB Online Portal</h3>
-                    <p class="text-secondary">Digital student admission system with form validation and notification simulation.</p>
+                    <span class="demo-badge">FULL DEMO</span>
+                    <h3 class="h4 text-white mb-3">CBT Online System</h3>
+                    <p class="text-secondary">Computer Based Test dengan timer, anti-cheat, dan sistem penilaian otomatis.</p>
+                    
+                    <div class="demo-screenshot">
+                        <i class="fas fa-clipboard-check fa-4x"></i>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Timer System</span>
+                        <span class="tech-tag">Anti-Cheat</span>
+                        <span class="tech-tag">Auto-Scoring</span>
+                    </div>
+                    
+                    <ul class="demo-features">
+                        <li>Login system dengan credentials demo</li>
+                        <li>Timer countdown dengan peringatan</li>
+                        <li>Sistem anti-cheat detection</li>
+                        <li>10 pertanyaan multiple choice</li>
+                        <li>Penilaian otomatis dengan breakdown</li>
+                        <li>Mark/review questions feature</li>
+                        <li>Keyboard shortcuts support</li>
+                    </ul>
+                    
+                    <a href="cbt-online.html" target="_blank" class="access-btn">
+                        <i class="fas fa-external-link-alt me-2"></i>LAUNCH CBT DEMO
+                    </a>
+                </div>
+            </div>
+
+            <!-- SPMB Online Portal -->
+            <div class="col-lg-6 mb-4">
+                <div class="demo-card">
+                    <span class="demo-badge">FULL SYSTEM</span>
+                    <h3 class="h4 text-white mb-3">SPMB Online Portal</h3>
+                    <p class="text-secondary">Student admission system with form validation and WhatsApp notification.</p>
                     
                     <div class="demo-screenshot">
                         <i class="fas fa-user-graduate fa-4x"></i>
                     </div>
                     
                     <div class="mb-3">
-                        <span class="tech-tag">Form Validation</span>
+                        <span class="tech-tag">Multi-step Form</span>
                         <span class="tech-tag">WhatsApp API</span>
-                        <span class="tech-tag">Data Processing</span>
+                        <span class="tech-tag">Local Storage</span>
+                        <span class="tech-tag">Print Function</span>
                         <span class="tech-tag">Admin Panel</span>
-                        <span class="tech-tag">Notification System</span>
                     </div>
                     
                     <ul class="demo-features">
-                        <li>Online registration form</li>
-                        <li>Data validation and processing</li>
+                        <li>4-step registration form dengan validasi</li>
                         <li>Simulated WhatsApp notification</li>
-                        <li>Admin dashboard interface</li>
-                        <li>Student data management</li>
+                        <li>Auto-generated registration number</li>
+                        <li>Print registration form feature</li>
+                        <li>Admin panel untuk view all registrations</li>
+                        <li>Data persistence dengan localStorage</li>
                     </ul>
                     
-                    <a href="https://spmb-demo.glitch.me/" target="_blank" class="access-btn">
-                        <i class="fas fa-rocket me-2"></i>TEST PROTOTYPE
-                    </a>
-                </div>
-            </div>
-
-            <!-- Demo 4: Certificate Generator -->
-            <div class="col-lg-6 mb-4">
-                <div class="demo-card">
-                    <span class="demo-badge">AUTOMATION TOOL</span>
-                    <h3 class="h4 text-white">Auto-Cert Generator</h3>
-                    <p class="text-secondary">Certificate template generator with custom name input and PDF download feature.</p>
-                    
-                    <div class="demo-screenshot">
-                        <i class="fas fa-certificate fa-4x"></i>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <span class="tech-tag">PDF Generation</span>
-                        <span class="tech-tag">Template System</span>
-                        <span class="tech-tag">Custom Text</span>
-                        <span class="tech-tag">Download Feature</span>
-                        <span class="tech-tag">Certificate Design</span>
-                    </div>
-                    
-                    <ul class="demo-features">
-                        <li>Custom certificate templates</li>
-                        <li>Name and date customization</li>
-                        <li>Instant PDF generation</li>
-                        <li>Professional certificate designs</li>
-                        <li>One-click download</li>
-                    </ul>
-                    
-                    <a href="https://cert-generator-demo.netlify.app/" target="_blank" class="access-btn">
-                        <i class="fas fa-download me-2"></i>TRY GENERATOR
+                    <a href="spmb-demo.html" target="_blank" class="access-btn">
+                        <i class="fas fa-rocket me-2"></i>LAUNCH SPMB DEMO
                     </a>
                 </div>
             </div>
         </div>
 
+        <!-- EDUCATIONAL GAMES -->
+        <h2 class="section-title">EDUCATIONAL GAMES</h2>
+        
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="demo-card">
+                    <span class="demo-badge">EDUCATIONAL GAME</span>
+                    <h3 class="h4 text-white mb-3">Tactical Quiz Challenge</h3>
+                    <p class="text-secondary">Game quiz tentang teknologi pendidikan dengan tema military operations.</p>
+                    
+                    <div class="demo-screenshot">
+                        <i class="fas fa-brain fa-4x"></i>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="tech-tag">JavaScript</span>
+                        <span class="tech-tag">Quiz Game</span>
+                        <span class="tech-tag">EdTech</span>
+                        <span class="tech-tag">Interactive</span>
+                        <span class="tech-tag">Scoring System</span>
+                    </div>
+                    
+                    <ul class="demo-features">
+                        <li>10 pertanyaan tentang teknologi pendidikan</li>
+                        <li>Sistem ranking berdasarkan score</li>
+                        <li>Statistik real-time</li>
+                        <li>Kontrol keyboard support</li>
+                        <li>Tema military yang konsisten</li>
+                        <li>Feedback langsung untuk jawaban</li>
+                    </ul>
+                    
+                    <a href="tactical-quiz.html" target="_blank" class="access-btn">
+                        <i class="fas fa-play me-2"></i>PLAY QUIZ GAME
+                    </a>
+                </div>
+            </div>
+
+            <!-- Certificate Generator -->
+            <div class="col-lg-6 mb-4">
+                <div class="demo-card">
+                    <span class="demo-badge">AUTOMATION TOOL</span>
+                    <h3 class="h4 text-white mb-3">Certificate Generator</h3>
+                    <p class="text-secondary">Professional certificate generator dengan multiple templates dan batch processing.</p>
+                    
+                    <div class="demo-screenshot">
+                        <i class="fas fa-award fa-4x"></i>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="tech-tag">3 Templates</span>
+                        <span class="tech-tag">Live Preview</span>
+                        <span class="tech-tag">Batch Generation</span>
+                        <span class="tech-tag">PDF/Image Export</span>
+                        <span class="tech-tag">Print Ready</span>
+                    </div>
+                    
+                    <ul class="demo-features">
+                        <li>3 professional certificate templates</li>
+                        <li>Live preview saat mengetik</li>
+                        <li>Batch generation untuk multiple recipients</li>
+                        <li>Simulated PDF/Image download</li>
+                        <li>Print-ready certificate design</li>
+                        <li>Military-themed template included</li>
+                    </ul>
+                    
+                    <a href="certificate-generator.html" target="_blank" class="access-btn">
+                        <i class="fas fa-certificate me-2"></i>LAUNCH GENERATOR
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Status -->
         <div class="demo-status">
             <div class="d-flex align-items-center">
                 <div class="me-3">
                     <i class="fas fa-server fa-2x" style="color: var(--olive-secondary);"></i>
                 </div>
                 <div>
-                    <h5 class="text-white m-0">SYSTEM STATUS</h5>
-                    <p class="m-0" style="color: var(--olive-light);">
-                        All demo systems operational. Ready for testing and evaluation. 
-                        <span class="blink">■</span> LIVE
+                    <h5 class="text-white m-0 mb-2">SYSTEM STATUS: <span style="color: var(--hazard-yellow);">OPERATIONAL</span></h5>
+                    <p class="m-0" style="color: var(--olive-light); font-size: 0.9rem;">
+                        All demo systems are running and ready for testing. 
+                        <span class="blink">■</span> LIVE - Last updated: <span id="currentTime"></span>
                     </p>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-12 text-center">
-                <div class="p-4 border border-secondary" style="background: rgba(20, 30, 20, 0.8); border-radius: 4px;">
-                    <h4 class="text-white mb-3"><i class="fas fa-info-circle me-2"></i>DEMO INSTRUCTIONS</h4>
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3" style="background: rgba(85, 107, 47, 0.2); border-radius: 4px;">
-                                <i class="fas fa-mouse-pointer fa-2x mb-2" style="color: var(--olive-light);"></i>
-                                <h6 class="text-white">Click to Access</h6>
-                                <small style="color: #9AB973;">Click any demo button to open in new tab</small>
-                            </div>
+        <!-- Instructions -->
+        <div class="instructions-grid">
+            <h4 class="text-white mb-4 text-center"><i class="fas fa-info-circle me-2"></i>DEMO INSTRUCTIONS</h4>
+            <div class="row">
+                <div class="col-md-3 mb-4">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-mouse-pointer"></i>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3" style="background: rgba(85, 107, 47, 0.2); border-radius: 4px;">
-                                <i class="fas fa-user-check fa-2x mb-2" style="color: var(--olive-light);"></i>
-                                <h6 class="text-white">Test Credentials</h6>
-                                <small style="color: #9AB973;">Use demo/demo if login required</small>
-                            </div>
+                        <h6 class="text-white mb-2">Click to Access</h6>
+                        <small style="color: #9AB973;">Click any demo button to open in new tab</small>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-user-check"></i>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3" style="background: rgba(85, 107, 47, 0.2); border-radius: 4px;">
-                                <i class="fas fa-exclamation-triangle fa-2x mb-2" style="color: var(--hazard-yellow);"></i>
-                                <h6 class="text-white">Note</h6>
-                                <small style="color: #9AB973;">These are functional prototypes</small>
-                            </div>
+                        <h6 class="text-white mb-2">Test Credentials</h6>
+                        <small style="color: #9AB973;">Use demo/demo123 for login demos</small>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-exclamation-triangle" style="color: var(--hazard-yellow);"></i>
                         </div>
-                        <div class="col-md-3 mb-3">
-                            <div class="p-3" style="background: rgba(85, 107, 47, 0.2); border-radius: 4px;">
-                                <i class="fas fa-envelope fa-2x mb-2" style="color: var(--olive-light);"></i>
-                                <h6 class="text-white">Contact</h6>
-                                <small style="color: #9AB973;">For full implementation, contact via main site</small>
-                            </div>
+                        <h6 class="text-white mb-2">Note</h6>
+                        <small style="color: #9AB973;">These are functional prototypes</small>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="instruction-item">
+                        <div class="instruction-icon">
+                            <i class="fas fa-envelope"></i>
                         </div>
+                        <h6 class="text-white mb-2">Contact</h6>
+                        <small style="color: #9AB973;">For full implementation, contact via main site</small>
                     </div>
                 </div>
             </div>
@@ -456,24 +617,89 @@
     </div>
 
     <script>
-        // Simple clock for demo page
-        function updateDemoClock() {
+        // Update current time
+        function updateCurrentTime() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
-            const dateString = now.toLocaleDateString('en-GB');
-            document.getElementById('demo-clock').innerText = `SYS.TIME: ${timeString} | DATE: ${dateString}`;
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const dateString = now.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+            document.getElementById('currentTime').textContent = `${dateString} ${timeString}`;
         }
-        
+
         // Create clock element if needed
         if(!document.getElementById('demo-clock')) {
             const clockDiv = document.createElement('div');
             clockDiv.id = 'demo-clock';
-            clockDiv.style.cssText = 'position: fixed; bottom: 10px; right: 10px; font-family: "Share Tech Mono", monospace; font-size: 0.8rem; color: var(--olive-light); background: rgba(10, 15, 10, 0.9); padding: 5px 10px; border: 1px solid var(--olive-dark); border-radius: 2px; z-index: 1000;';
+            clockDiv.style.cssText = `
+                position: fixed; 
+                bottom: 15px; 
+                right: 15px; 
+                font-family: 'Share Tech Mono', monospace; 
+                font-size: 0.8rem; 
+                color: var(--olive-light); 
+                background: rgba(10, 15, 10, 0.9); 
+                padding: 8px 12px; 
+                border: 1px solid var(--olive-dark); 
+                border-radius: 4px; 
+                z-index: 1000;
+                border-left: 3px solid var(--olive-secondary);
+            `;
             document.body.appendChild(clockDiv);
         }
-        
-        setInterval(updateDemoClock, 1000);
-        updateDemoClock();
+
+        // Update both clocks
+        function updateClocks() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const dateString = now.toLocaleDateString('en-GB');
+            
+            // Update main clock
+            updateCurrentTime();
+            
+            // Update floating clock
+            if(document.getElementById('demo-clock')) {
+                document.getElementById('demo-clock').innerText = `SYS.TIME: ${timeString}`;
+            }
+        }
+
+        // Initialize clocks
+        setInterval(updateClocks, 1000);
+        updateClocks();
+
+        // Add hover effect to demo cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const demoCards = document.querySelectorAll('.demo-card');
+            
+            demoCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const badge = this.querySelector('.demo-badge');
+                    if(badge) {
+                        badge.style.transform = 'scale(1.05)';
+                        badge.style.transition = 'transform 0.3s ease';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    const badge = this.querySelector('.demo-badge');
+                    if(badge) {
+                        badge.style.transform = 'scale(1)';
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
